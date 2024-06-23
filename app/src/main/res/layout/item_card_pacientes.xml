@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+
+    app:cardElevation="4dp"
+    app:cardCornerRadius="20dp"
+    app:cardUseCompatPadding="true"
+    app:contentPadding="10dp"
+    android:backgroundTint="@color/white"
+
+    android:layout_width="match_parent"
+    android:layout_height="135dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="314dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtApellidosPaciente"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center_vertical"
+                android:text="Granados Cañas"
+                android:textColor="@color/purple_500"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="230dp"
+                android:layout_height="25dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/bed_24dp_fill0_wght400_grad0_opsz24" />
+
+                <TextView
+                    android:id="@+id/txtHabitacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center_vertical"
+                    android:text="Habitación:"
+                    android:textColor="@color/purple_500"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/txtHabitacionPaciente"
+                    android:layout_width="92dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center_vertical"
+                    android:text="62.21"
+                    android:textColor="@color/purple_200"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="210dp"
+                android:layout_height="30dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_control" />
+
+                <TextView
+                    android:id="@+id/txtProxima"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="bottom"
+                    android:text="Control:"
+                    android:textColor="@color/purple_500"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/txtHorarioPaciente"
+                    android:layout_width="92dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="bottom"
+                    android:text="21:00 HRS"
+                    android:textColor="@color/purple_200"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imgBorrar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            app:srcCompat="@drawable/ic_more" />
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

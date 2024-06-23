@@ -38,12 +38,12 @@
         android:layout_height="44dp"
         android:fontFamily="@font/poppins_semibold"
         android:text="MINSAL\nEl Salvador"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.639"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.407"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.943" />
 </androidx.constraintlayout.widget.ConstraintLayout>
