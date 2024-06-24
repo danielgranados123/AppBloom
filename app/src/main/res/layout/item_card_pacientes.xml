@@ -76,7 +76,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/poppins_medium"
                     android:gravity="center_vertical"
-                    android:text="62.21"
+                    android:text="A1"
                     android:textColor="@color/purple_200"
                     android:textSize="16sp" />
 
