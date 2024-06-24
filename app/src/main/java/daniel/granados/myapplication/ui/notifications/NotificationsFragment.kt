@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import daniel.granados.myapplication.R
 import daniel.granados.myapplication.databinding.FragmentNotificationsBinding
 
 class NotificationsFragment : Fragment() {
@@ -28,10 +30,14 @@ class NotificationsFragment : Fragment() {
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
+        val textView: TextView = binding.lblMisPacientes
         notificationsViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+
+        val btnNuevo = root.findViewById<FloatingActionButton>(R.id.btnAgregarPaciente)
+
+
         return root
     }
 
