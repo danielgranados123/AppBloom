@@ -36,7 +36,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/txtApellidosPaciente"
+                android:id="@+id/lblApellidosPaciente"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -70,7 +70,7 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/txtHabitacionPaciente"
+                    android:id="@+id/lblHabitacionPaciente"
                     android:layout_width="92dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -107,7 +107,7 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/txtHorarioPaciente"
+                    android:id="@+id/lblHorarioPaciente"
                     android:layout_width="92dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
