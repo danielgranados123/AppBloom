@@ -1,0 +1,4 @@
+package pacientesHelper
+
+class AdaptadorPacientes {
+}
