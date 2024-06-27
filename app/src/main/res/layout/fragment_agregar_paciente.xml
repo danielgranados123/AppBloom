@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
@@ -33,11 +33,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <TextView
         android:id="@+id/textView19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/poppins_semibold"
         android:text="Información Personal:"
         android:textColor="@color/black"
@@ -45,7 +46,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.236"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView13" />
 
     <EditText
         android:id="@+id/txtNombrePaciente"
@@ -167,6 +168,40 @@
         app:layout_constraintHorizontal_bias="0.253"
         app:layout_constraintStart_toEndOf="@+id/txtMedicamentosPaciente"
         app:layout_constraintTop_toBottomOf="@+id/txtEnfermedadPaciente" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="184dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Información Hospitalaria:"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.28"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtEdadPaciente" />
+
+    <Spinner
+        android:id="@+id/txtHabitacionPaciente"
+        android:layout_width="311dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="168dp"
+        android:background="@drawable/bg_form"
+        android:backgroundTintMode="add"
+        android:drawableRight="@drawable/ic_down_spinner"
+        android:ems="10"
+        android:foreground="@drawable/ic_down_spinner"
+        android:foregroundGravity="center|right"
+        android:foregroundTint="@color/black"
+        android:hint="Enfermedad"
+        android:inputType="text"
+        android:paddingLeft="16dp"
+        android:theme="@style/SpinnerFuente"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
     <Button
         android:id="@+id/btnGuardarPaciente"

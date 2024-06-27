@@ -1,5 +1,6 @@
 package daniel.granados.myapplication.ui.notifications
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import daniel.granados.myapplication.R
 import daniel.granados.myapplication.databinding.FragmentNotificationsBinding
@@ -37,6 +39,9 @@ class NotificationsFragment : Fragment() {
 
         val btnNuevo = root.findViewById<FloatingActionButton>(R.id.btnAgregarPaciente)
 
+        btnNuevo.setOnClickListener{
+            findNavController().navigate(R.id.action_navigation_notifications_to_fragment_agregar_paciente)
+        }
 
         return root
     }
