@@ -6,11 +6,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import modelo.ClaseConexion
+import modelo.DataClassCamas
+import modelo.DataClassHabitaciones
 import java.util.Calendar
 
 // TODO: Rename parameter arguments, choose names that match
@@ -53,6 +61,82 @@ class fragment_agregar_paciente_prueba : Fragment() {
         val btnGuardarPaciente = root.findViewById<Button>(R.id.btnGuardarPaciente)
         val txtControlPaciente = root.findViewById<TextView>(R.id.txtControlPaciente)
 
+
+        //Funcion para obtener las habitaciones
+        fun obtenerHabitaciones(): List<DataClassHabitaciones>{
+            //Crear un objeto de la clase conexion
+            val objConexion= ClaseConexion().cadenaConexion()
+
+            //crepo un Statement que me ejecutara el Select
+            val Statement = objConexion?.createStatement()
+
+            val resulset = Statement?.executeQuery("Select * from tbHabitaciones")!!
+
+            val listaHabitaciones= mutableListOf<DataClassHabitaciones>()
+
+            while (resulset.next()){
+                val id = resulset.getInt("ID_Habitacion")
+                val nombre = resulset.getString("nombre_habitacion")
+                val habitacionCompleta = DataClassHabitaciones(id, nombre)
+
+                listaHabitaciones.add(habitacionCompleta)
+            }
+            return listaHabitaciones
+        }
+
+        //Programar Spinner para que muestre datos del select
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    //Obtengo los datos
+                    val listaHabitaciones = obtenerHabitaciones()
+                    val nombreHabitaciones = listaHabitaciones.map { it.nombre_habitacion }
+
+                    withContext(Dispatchers.Main){
+                        //2-Crear y modificar el adaptador
+                        val miAdaptador = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, nombreHabitaciones)
+
+                        spHabitaciones.adapter = miAdaptador
+                    }
+                }
+
+        //Funcion para obtener las camas
+        fun obtenerCamas(): List<DataClassCamas>{
+            //Crear un objeto de la clase conexion
+            val objConexion= ClaseConexion().cadenaConexion()
+
+            //crepo un Statement que me ejecutara el Select
+            val Statement = objConexion?.createStatement()
+
+            val resulset = Statement?.executeQuery("Select * from tbCamas")!!
+
+            val listaCamas= mutableListOf<DataClassCamas>()
+
+            while (resulset.next()){
+                val id = resulset.getInt("ID_Cama")
+                val nombre = resulset.getString("nombre_cama")
+                val camaCompleta = DataClassCamas(id, nombre)
+
+                listaCamas.add(camaCompleta)
+            }
+            return listaCamas
+        }
+
+        //Programar Spinner para que muestre datos del select
+
+        CoroutineScope(Dispatchers.IO).launch {
+            //Obtengo los datos
+            val listaCamas = obtenerCamas()
+            val nombreCamas = listaCamas.map { it.nombre_cama }
+
+            withContext(Dispatchers.Main){
+                //2-Crear y modificar el adaptador
+                val miAdaptador = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, nombreCamas)
+
+                spHabitaciones.adapter = miAdaptador
+            }
+        }
+
+
         txtControlPaciente.setOnClickListener {
             val calendario = Calendar.getInstance()
             val anio = calendario.get(Calendar.YEAR)
@@ -72,7 +156,6 @@ class fragment_agregar_paciente_prueba : Fragment() {
 
         btnGuardarPaciente.setOnClickListener {
             if (txtNombrePaciente.text.toString().isEmpty() ||
-                txtNombrePaciente.text.toString().isEmpty() ||
                 txtApellidoPaciente.text.toString().isEmpty() ||
                 txtEdad.text.toString().isEmpty() ||
                 txtControlPaciente.text.toString().isEmpty() ||
@@ -88,7 +171,17 @@ class fragment_agregar_paciente_prueba : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                
+
+                val objConexion = ClaseConexion().cadenaConexion()
+
+                val agregarPaciente = objConexion?.prepareStatement("insert into tbPacientes (nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values (?, ?, ?, ?)")!!
+
+                val habitacionCama =
+                    agregarPaciente.setString(1, txtNombrePaciente.text.toString())
+                    agregarPaciente.setString(2, txtApellidoPaciente.text.toString())
+                    agregarPaciente.setString(3, txtEdad.text.toString())
+                    agregarPaciente.setString(4, habitacionCama.text.toString())
+
             }
         }
 
