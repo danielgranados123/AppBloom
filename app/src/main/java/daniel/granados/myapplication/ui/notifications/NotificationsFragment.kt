@@ -40,7 +40,7 @@ class NotificationsFragment : Fragment() {
         val btnNuevo = root.findViewById<FloatingActionButton>(R.id.btnAgregarPaciente)
 
         btnNuevo.setOnClickListener{
-            findNavController().navigate(R.id.action_navigation_notifications_to_fragment_agregar_paciente)
+            findNavController().navigate(R.id.action_navigation_notifications_to_fragment_agregar_paciente_prueba)
         }
 
         return root
