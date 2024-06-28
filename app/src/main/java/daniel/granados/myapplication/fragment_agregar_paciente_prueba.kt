@@ -1,6 +1,8 @@
 package daniel.granados.myapplication
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +13,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.TimePicker
 import android.widget.Toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +23,7 @@ import modelo.ClaseConexion
 import modelo.DataClassCamas
 import modelo.DataClassHabitaciones
 import java.util.Calendar
+import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,7 +63,7 @@ class fragment_agregar_paciente_prueba : Fragment() {
         val spHabitaciones = root.findViewById<Spinner>(R.id.txtHabitacionPaciente)
         val spCamas = root.findViewById<Spinner>(R.id.txtCamaPaciente)
         val btnGuardarPaciente = root.findViewById<Button>(R.id.btnGuardarPaciente)
-        val txtControlPaciente = root.findViewById<TextView>(R.id.txtControlPaciente)
+        val txtControlPaciente = root.findViewById<EditText>(R.id.txtControlPaciente)
 
 
         //Funcion para obtener las habitaciones
@@ -99,21 +103,26 @@ class fragment_agregar_paciente_prueba : Fragment() {
                     }
                 }
 
-        //Funcion para obtener las camas
+        //Funcion para obtener las camas (dependiendo la habitacion seleccionada)
         fun obtenerCamas(): List<DataClassCamas>{
             //Crear un objeto de la clase conexion
             val objConexion= ClaseConexion().cadenaConexion()
 
             //crepo un Statement que me ejecutara el Select
-            val Statement = objConexion?.createStatement()
+            val statement = objConexion?.createStatement()
 
-            val resulset = Statement?.executeQuery("Select * from tbCamas")!!
+            val resulSet = statement?.executeQuery("select nombre_cama\n" +
+                    "from tbHabitacionesCamas hc \n" +
+                    "inner join tbCamas c on hc.id_Cama = c.ID_Cama\n" +
+                    "where ID_Habitacion = ?")!!
+
+            val habitacionCama = resulSet.setString()
 
             val listaCamas= mutableListOf<DataClassCamas>()
 
-            while (resulset.next()){
-                val id = resulset.getInt("ID_Cama")
-                val nombre = resulset.getString("nombre_cama")
+            while (resulSet.next()){
+                val id = resulSet.getInt("ID_Cama")
+                val nombre = resulSet.getString("nombre_cama")
                 val camaCompleta = DataClassCamas(id, nombre)
 
                 listaCamas.add(camaCompleta)
@@ -136,22 +145,31 @@ class fragment_agregar_paciente_prueba : Fragment() {
             }
         }
 
+        //Función para seleccionar la hora
+        fun showTimePickerDialog(textView: EditText) {
+            val cal = Calendar.getInstance()
+            val hour = cal.get(Calendar.HOUR_OF_DAY)
+            val minute = cal.get(Calendar.MINUTE)
+
+            val timePickerDialog = TimePickerDialog(
+                requireContext(),
+                { _: TimePicker, hourOfDay: Int, minute: Int ->
+                    cal.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                    cal.set(Calendar.MINUTE, minute)
+                    val format = SimpleDateFormat("hh:mm a", Locale.getDefault())
+                    val formattedTime = format.format(cal.time)
+                    textView.setText(formattedTime)
+                },
+                hour,
+                minute,
+                false
+            )
+
+            timePickerDialog.show()
+        }
 
         txtControlPaciente.setOnClickListener {
-            val calendario = Calendar.getInstance()
-            val anio = calendario.get(Calendar.YEAR)
-            val mes = calendario.get(Calendar.MONTH)
-            val dia = calendario.get(Calendar.DAY_OF_MONTH)
-            val datePickerDialog = DatePickerDialog(
-                requireContext(),
-                { view, anioSeleccionado, mesSeleccionado, diaSeleccionado ->
-                    val fechaSeleccionada =
-                        "$diaSeleccionado/${mesSeleccionado + 1}/$anioSeleccionado"
-                    txtControlPaciente.setText(fechaSeleccionada)
-                },
-                anio, mes, dia
-            )
-            datePickerDialog.show()
+            showTimePickerDialog(txtControlPaciente)
         }
 
         btnGuardarPaciente.setOnClickListener {
