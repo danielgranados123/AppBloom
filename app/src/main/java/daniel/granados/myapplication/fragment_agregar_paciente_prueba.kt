@@ -182,6 +182,11 @@ class fragment_agregar_paciente_prueba : Fragment() {
                     agregarPaciente.setString(3, txtEdad.text.toString())
                     agregarPaciente.setString(4, habitacionCama.text.toString())
 
+                val agregarPacienteEmfermedad = objConexion?.prepareStatement("insert into tbPacientesEnfermedades (id_paciente, id_enfermedad) values (?, ?)")!!
+
+                val pacienteEnfermedad =
+                    agregarPacienteEmfermedad.setInt(1, )
+                    agregarPacienteEmfermedad.setInt(2, )
             }
         }
 
