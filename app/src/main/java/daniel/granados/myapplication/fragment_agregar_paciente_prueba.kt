@@ -1,6 +1,5 @@
 package daniel.granados.myapplication
 
-import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
@@ -12,7 +11,6 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
-import android.widget.TextView
 import android.widget.TimePicker
 import android.widget.Toast
 import kotlinx.coroutines.CoroutineScope
@@ -60,8 +58,8 @@ class fragment_agregar_paciente_prueba : Fragment() {
         val txtApellidoPaciente = root.findViewById<EditText>(R.id.txtApellidoPaciente)
         val txtEdad = root.findViewById<EditText>(R.id.txtEdadPaciente)
         val spMedicamentos = root.findViewById<Spinner>(R.id.txtMedicamentosPaciente)
-        val spHabitaciones = root.findViewById<Spinner>(R.id.txtHabitacionPaciente)
-        val spCamas = root.findViewById<Spinner>(R.id.txtCamaPaciente)
+        val spHabitaciones = root.findViewById<Spinner>(R.id.spHabitacionPaciente)
+        val spCamas = root.findViewById<Spinner>(R.id.txtCamasPaciente)
         val btnGuardarPaciente = root.findViewById<Button>(R.id.btnGuardarPaciente)
         val txtControlPaciente = root.findViewById<EditText>(R.id.txtControlPaciente)
 
@@ -109,14 +107,13 @@ class fragment_agregar_paciente_prueba : Fragment() {
             val objConexion= ClaseConexion().cadenaConexion()
 
             //crepo un Statement que me ejecutara el Select
-            val statement = objConexion?.createStatement()
+            val selectHabitaciones = objConexion?.prepareStatement("select  id_cama, nombre_cama from tbHabitacionesCamas hc inner join tbCamas c on hc.id_Cama = c.ID_Cama where ID_Habitacion = ?")!!
 
-            val resulSet = statement?.executeQuery("select nombre_cama\n" +
-                    "from tbHabitacionesCamas hc \n" +
-                    "inner join tbCamas c on hc.id_Cama = c.ID_Cama\n" +
-                    "where ID_Habitacion = ?")!!
+            val listadoHabSeleccionada = obtenerHabitaciones()
+            val IDTraido = listadoHabSeleccionada.map { it.ID_Habitacion }
 
-            val habitacionCama = resulSet.setString()
+            selectHabitaciones.setString(1, IDTraido.toString())
+            val resulSet = selectHabitaciones.executeQuery()
 
             val listaCamas= mutableListOf<DataClassCamas>()
 
@@ -131,6 +128,7 @@ class fragment_agregar_paciente_prueba : Fragment() {
         }
 
         //Programar Spinner para que muestre datos del select
+    //El codigo para llenar spCamas debe estar en el
 
         CoroutineScope(Dispatchers.IO).launch {
             //Obtengo los datos
@@ -188,7 +186,8 @@ class fragment_agregar_paciente_prueba : Fragment() {
                     "Verifica que todos los campos estén completos.",
                     Toast.LENGTH_SHORT
                 ).show()
-            } else {
+            } /*
+            else {
 
                 val objConexion = ClaseConexion().cadenaConexion()
 
@@ -205,7 +204,7 @@ class fragment_agregar_paciente_prueba : Fragment() {
                 val pacienteEnfermedad =
                     agregarPacienteEmfermedad.setInt(1, )
                     agregarPacienteEmfermedad.setInt(2, )
-            }
+            }*/
         }
 
         return root

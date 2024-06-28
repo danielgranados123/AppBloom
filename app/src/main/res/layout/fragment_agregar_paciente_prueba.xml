@@ -247,7 +247,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView24" />
 
             <Spinner
-                android:id="@+id/txtHabitacionPaciente"
+                android:id="@+id/spHabitacionPaciente"
                 android:layout_width="161dp"
                 android:layout_height="44dp"
                 android:background="@drawable/bg_form"
@@ -281,7 +281,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView24" />
 
             <Spinner
-                android:id="@+id/txtCamaPaciente"
+                android:id="@+id/txtCamasPaciente"
                 android:layout_width="133dp"
                 android:layout_height="44dp"
                 android:background="@drawable/bg_form"
@@ -314,7 +314,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtHabitacionPaciente" />
+                app:layout_constraintTop_toBottomOf="@+id/spHabitacionPaciente" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

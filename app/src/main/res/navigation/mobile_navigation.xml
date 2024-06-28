@@ -34,5 +34,14 @@
     <fragment
         android:id="@+id/fragment_agregar_paciente_prueba"
         android:name="daniel.granados.myapplication.fragment_agregar_paciente_prueba"
-        android:label="fragment_agregar_paciente_prueba" />
+        android:label="fragment_agregar_paciente_prueba" >
+        <action
+            android:id="@+id/action_fragment_agregar_paciente_prueba_to_fragment_detalles"
+            app:destination="@id/fragment_detalles" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_detalles"
+        android:name="daniel.granados.myapplication.fragment_detalles"
+        android:label="fragment_detalles"
+        tools:layout="@layout/fragment_detalles" />
 </navigation>

@@ -184,7 +184,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txtEdadPaciente" />
 
     <Spinner
-        android:id="@+id/txtHabitacionPaciente"
+        android:id="@+id/spHabitacionPaciente"
         android:layout_width="311dp"
         android:layout_height="46dp"
         android:layout_marginTop="168dp"
