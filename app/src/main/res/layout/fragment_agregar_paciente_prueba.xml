@@ -281,7 +281,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView24" />
 
             <Spinner
-                android:id="@+id/txtCamasPaciente"
+                android:id="@+id/spCamasPaciente"
                 android:layout_width="133dp"
                 android:layout_height="44dp"
                 android:background="@drawable/bg_form"
