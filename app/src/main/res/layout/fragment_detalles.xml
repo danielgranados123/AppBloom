@@ -281,7 +281,7 @@
                         app:layout_constraintHorizontal_bias="0.446"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.075"
+                        app:layout_constraintVertical_bias="0.05"
                         app:srcCompat="@drawable/linea_gris_1" />
 
                     <TextView
@@ -325,6 +325,164 @@
 
             </androidx.cardview.widget.CardView>
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView6"
+                android:layout_width="350dp"
+                android:layout_height="312dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView5">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/lblInformacionHospitalaria"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:lineSpacingMultiplier="0.8"
+                        android:text="Información\nHospitalaria"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/purple_500"
+                        android:textSize="20sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.609"
+                        app:layout_constraintStart_toEndOf="@+id/imageView"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/lblHabitacion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Habitación:"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+                    <Spinner
+                        android:id="@+id/spHabitacionPacienteDetalle"
+                        android:layout_width="260dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_form"
+                        android:backgroundTintMode="add"
+                        android:drawableRight="@drawable/ic_down_spinner"
+                        android:ems="10"
+                        android:foreground="@drawable/ic_down_spinner"
+                        android:foregroundGravity="center|right"
+                        android:foregroundTint="@color/black"
+                        android:hint="Habitación"
+                        android:inputType="text"
+                        android:paddingLeft="16dp"
+                        android:clickable="false"
+                        android:theme="@style/SpinnerFuente"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/lblHabitacion" />
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="108dp"
+                        android:layout_height="84dp"
+
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.082"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0"
+                        app:srcCompat="@drawable/ic_hospitalaria" />
+
+                    <ImageView
+                        android:id="@+id/imageView145"
+                        android:layout_width="1dp"
+                        android:layout_height="70dp"
+
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.446"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.04"
+                        app:srcCompat="@drawable/linea_gris_1" />
+
+                    <TextView
+                        android:id="@+id/lblCama"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Cama:"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:layout_editor_absoluteY="172dp" />
+
+                    <Spinner
+                        android:id="@+id/spCamaPacienteDetalle"
+                        android:layout_width="260dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_form"
+                        android:backgroundTintMode="add"
+                        android:drawableRight="@drawable/ic_down_spinner"
+                        android:ems="10"
+                        android:foreground="@drawable/ic_down_spinner"
+                        android:foregroundGravity="center|right"
+                        android:foregroundTint="@color/black"
+                        android:hint="Cama"
+                        android:inputType="text"
+                        android:paddingLeft="16dp"
+                        android:theme="@style/SpinnerFuente"
+                        android:clickable="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/lblCama" />
+
+                    <ImageView
+                        android:id="@+id/imgEditarHabitacionPaciente"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_editar"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.993"
+                        app:layout_constraintStart_toEndOf="@+id/spHabitacionPacienteDetalle"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.552" />
+
+                    <ImageView
+                        android:id="@+id/imgEditarCamaPaciente"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_editar"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toEndOf="@+id/spCamaPacienteDetalle"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.895" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
             <Button
                 android:id="@+id/btnBorrarPaciente"
                 android:layout_width="218dp"
@@ -335,13 +493,14 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
+                android:layout_marginTop="20dp"
 
                 android:text="Borrar Registro"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView5" />
+                app:layout_constraintTop_toBottomOf="@+id/cardView6" />
 
             <ImageView
                 android:id="@+id/imageView14"
