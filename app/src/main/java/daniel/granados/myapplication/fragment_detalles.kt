@@ -4,10 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Spinner
+import android.widget.TextView
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -40,11 +45,49 @@ class fragment_detalles : Fragment() {
         val root = inflater.inflate(R.layout.fragment_detalles, container, false)
 
         val btnSalir = root.findViewById<ImageView>(R.id.imgExitDetallePacientes)
+        val btnEditarHabitacion = root.findViewById<ImageView>(R.id.imgEditarHabitacionPaciente)
+        val btnEditarCama = root.findViewById<ImageView>(R.id.imgEditarCamaPaciente)
 
         //Volver a pantalla principal
         btnSalir.setOnClickListener{
             findNavController().navigate(R.id.action_fragment_detalles_to_navigation_notifications)
         }
+
+        //Cuando el usuario selecciona el boton de editar, se habilitan los spinners
+        btnEditarHabitacion.setOnClickListener{
+
+        }
+
+        btnEditarCama.setOnClickListener{
+
+        }
+
+
+        //Mostrar datos
+        //Llamo a los elementos que tengo
+        val txtApellidoPacienteDetalle = root.findViewById<TextView>(R.id.txtApellidoPacienteDetalle)
+        val txtNombrePacienteDetalle = root.findViewById<TextView>(R.id.txtNombrePacienteDetalle)
+        val txtEdadPacienteDetalle = root.findViewById<TextureView>(R.id.txtEdadPacienteDetalle)
+        val btnEditarNombreApellidoDetalle = root.findViewById<ImageView>(R.id.imgEditarNombreApellidoDetalle)
+        val btnimgEditarEdadPaciente = root.findViewById<TextureView>(R.id.imgEditarEdadPaciente)
+
+        val txtEnfermedadPacienteDetalle = root.findViewById<TextureView>(R.id.txtEnfermedadPacienteDetalle)
+        val rcvMedicamentos = root.findViewById<RecyclerView>(R.id.rcvMedicamentos)
+        val btnEditarEnfermedadPaciente = root.findViewById<ImageView>(R.id.imgEditarEnfermedadPaciente)
+
+        val spHabitacionPacienteDetalle = root.findViewById<Spinner>(R.id.spHabitacionPacienteDetalle)
+        val spCamaPacienteDetalle = root.findViewById<Spinner>(R.id.spCamaPacienteDetalle)
+
+
+        //Recibo los valores
+        val nombrePaciente = Intent.getStringExtra("nombresPaciente")
+
+
+
+        //Asigno la informacion recibida a los TextView correspondientes
+
+
+
 
         return root
     }

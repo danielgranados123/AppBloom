@@ -69,91 +69,27 @@ class AdaptadorPacientes(private var Datos: List<DataClassPacientes>) : Recycler
         }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val ticket = Datos[position]
-        holder..text = ticket.titulo
-        holder.txtAutor.text = ticket.nombreAutor
-
-
+    override fun onBindViewHolder(holder: ViewHolderPacientes, position: Int) {
+        //Asigno los valores a los textView de la card
         val item = Datos[position]
 
-            holder.imgBorrar.setOnClickListener {
-                //Creamos una alerta
-                //1-Invocamos el contexto
-
-                val context = holder.itemView.context
-
-                //Creo la alerta
-                val builder = AlertDialog.Builder(context)
-
-                //Le ponemos un titulo a la alerta
-
-                builder.setTitle("¡Espera!")
-
-                //Ponemos el mensaje
-                builder.setMessage("¿Estás seguro de que deseas eliminar este paciente?")
-
-                //Paso final, agregamos los botones
-                builder.setPositiveButton("Si"){
-                        dialog, wich ->
-                    eliminarPacientes(item.ID_Paciente, position)
-                }
-
-                builder.setNegativeButton("No"){
-                        dialog, wich ->
-                }
-
-                val alertDialog = builder.create()
-                alertDialog.show()
-            }
-
-            holder.imgEditar.setOnClickListener {
-
-                val context = holder.itemView.context
-
-                //Crear alerta
-
-                val builder = AlertDialog.Builder(context)
-                builder.setTitle("Editar estado del ticket:")
-
-                //Agregamos cuadro de texto para que el usuario escriba el nuevo nombre
-                val cuadritoNuevoNombre = EditText(context)
-                cuadritoNuevoNombre.setHint(item.estado)
-                builder.setView(cuadritoNuevoNombre)
-
-                //Paso final, agregamos los botones
-                builder.setPositiveButton("Actualizar"){
-                        dialog, wich ->
-                    actualizarTickets(cuadritoNuevoNombre.text.toString(), item.uuid)
-                }
-
-                builder.setNegativeButton("Cancelar"){
-                        dialog, wich ->
-                    dialog.dismiss()
-                }
-
-                val alertDialog = builder.create()
-                alertDialog.show()
-            }
-
-        //Darle clic a la card
         holder.itemView.setOnClickListener {
-            //Invoco el contexto
             val context = holder.itemView.context
+            val intent = Intent(context, fragment_detalles::class.java)
+            intent.putExtra(
+                "nombrePaciente",
+                item.nombrePaciente
+            )
+            intent.putExtra(
+                "apellidoPaciente",
+                item.apellidoPaciente
+            )
+            intent.putExtra(
+                "edadPaciente",
+                item.edadPaciente
+            )
 
-            //Cambiamos la pantalla
-            //Abrimos la pantalla de detalle de pacientes
-
-            val pantallaDetalles = Intent(context, fragment_detalles::class.java)
-
-            //Aqui, antes de abrir la nueva pantalla le mando los parametros
-            pantallaDetalles.putExtra("nombresPaciente", item.nombrePaciente)
-            pantallaDetalles.putExtra("apellidosPaciente", item.apellidoPaciente)
-
-
-            context.startActivity(pantallaDetalles)
-
-
+            context.startActivity(intent)
         }
     }
 }
