@@ -32,16 +32,21 @@
         android:label="fragment_agregar_paciente_prueba"
         tools:layout="@layout/fragment_agregar_paciente_prueba" />
     <fragment
-        android:id="@+id/fragment_agregar_paciente_prueba"
-        android:name="daniel.granados.myapplication.fragment_agregar_paciente_prueba"
-        android:label="fragment_agregar_paciente_prueba" >
-        <action
-            android:id="@+id/action_fragment_agregar_paciente_prueba_to_fragment_detalles"
-            app:destination="@id/fragment_detalles" />
-    </fragment>
-    <fragment
         android:id="@+id/fragment_detalles"
         android:name="daniel.granados.myapplication.fragment_detalles"
         android:label="fragment_detalles"
-        tools:layout="@layout/fragment_detalles" />
+        tools:layout="@layout/fragment_detalles" >
+        <action
+            android:id="@+id/action_fragment_detalles_to_navigation_notifications"
+            app:destination="@id/navigation_notifications" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_agregar_paciente_prueba"
+        android:name="daniel.granados.myapplication.fragment_agregar_paciente_prueba"
+        android:label="fragment_agregar_paciente_prueba"
+        tools:layout="@layout/fragment_agregar_paciente_prueba" >
+        <action
+            android:id="@+id/action_fragment_agregar_paciente_prueba_to_navigation_notifications"
+            app:destination="@id/navigation_notifications" />
+    </fragment>
 </navigation>

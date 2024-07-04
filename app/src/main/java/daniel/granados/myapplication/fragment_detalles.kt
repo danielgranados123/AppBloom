@@ -1,10 +1,13 @@
 package daniel.granados.myapplication
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.navigation.fragment.findNavController
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,7 +37,16 @@ class fragment_detalles : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detalles, container, false)
+        val root = inflater.inflate(R.layout.fragment_detalles, container, false)
+
+        val btnSalir = root.findViewById<ImageView>(R.id.imgExitDetallePacientes)
+
+        //Volver a pantalla principal
+        btnSalir.setOnClickListener{
+            findNavController().navigate(R.id.action_fragment_detalles_to_navigation_notifications)
+        }
+
+        return root
     }
 
     companion object {
