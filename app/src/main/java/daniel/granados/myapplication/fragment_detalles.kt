@@ -80,12 +80,18 @@ class fragment_detalles : Fragment() {
 
 
         //Recibo los valores
-        val nombrePaciente = Intent.getStringExtra("nombresPaciente")
+        val nombrePaciente = arguments?.getString("nombrePaciente")
+        val apellidoPaciente = arguments?.getString("apellidoPaciente")
+        val edadPaciente = arguments?.getInt("edadPaciente")
+        val enfermedadPaciente = arguments?.getString("enfermedadPaciente")
+        val habitacionPaciente = arguments?.getString("habitacionPaciente")
+        val camaPaciente = arguments?.getString("camaPaciente")
 
 
 
         //Asigno la informacion recibida a los TextView correspondientes
-
+        txtNombrePacienteDetalle.text = nombrePaciente
+        txtApellidoPacienteDetalle.text = apellidoPaciente
 
 
 

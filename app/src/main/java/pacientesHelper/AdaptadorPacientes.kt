@@ -89,6 +89,8 @@ class AdaptadorPacientes(private var Datos: List<DataClassPacientes>) : Recycler
                 item.edadPaciente
             )
 
+
+
             context.startActivity(intent)
         }
     }
