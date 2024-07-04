@@ -70,9 +70,43 @@ class AdaptadorPacientes(private var Datos: List<DataClassPacientes>) : Recycler
     }
 
     override fun onBindViewHolder(holder: ViewHolderPacientes, position: Int) {
-        //Asigno los valores a los textView de la card
         val item = Datos[position]
+        holder.lblApellidoPaciente.text = item.apellidoPaciente
+        holder.lblHabitacion.text = item.habitacion
+        holder.lblHoraControl.text = item.lblHorarioPaciente
 
+            holder.imgBorrar.setOnClickListener {
+                //Creamos una alerta
+                //1-Invocamos el contexto
+
+                val context = holder.itemView.context
+
+                //Creo la alerta
+                val builder = AlertDialog.Builder(context)
+
+                //Le ponemos un titulo a la alerta
+
+                builder.setTitle("¡Espera!")
+
+                //Ponemos el mensaje
+                builder.setMessage("¿Estás seguro de que deseas elimar el registro?")
+
+                //Paso final, agregamos los botones
+                builder.setPositiveButton("Si"){
+                        dialog, wich ->
+                    eliminarPacientes(item.ID_Paciente, position)
+                }
+
+                builder.setNegativeButton("No"){
+                        dialog, wich ->
+                }
+
+                val alertDialog = builder.create()
+                alertDialog.show()
+            }
+        
+
+        //Asigno los valores a los textView de la card
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
             val intent = Intent(context, fragment_detalles::class.java)

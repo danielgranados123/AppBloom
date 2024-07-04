@@ -7,9 +7,12 @@ import android.view.LayoutInflater
 import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 
@@ -47,6 +50,7 @@ class fragment_detalles : Fragment() {
         val btnSalir = root.findViewById<ImageView>(R.id.imgExitDetallePacientes)
         val btnEditarHabitacion = root.findViewById<ImageView>(R.id.imgEditarHabitacionPaciente)
         val btnEditarCama = root.findViewById<ImageView>(R.id.imgEditarCamaPaciente)
+        val btnEliminarPaciente = root.findViewById<Button>(R.id.btnBorrarPaciente)
 
         //Volver a pantalla principal
         btnSalir.setOnClickListener{
@@ -92,6 +96,11 @@ class fragment_detalles : Fragment() {
         //Asigno la informacion recibida a los TextView correspondientes
         txtNombrePacienteDetalle.text = nombrePaciente
         txtApellidoPacienteDetalle.text = apellidoPaciente
+
+
+
+        //Editar campos
+
 
 
 
