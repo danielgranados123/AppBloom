@@ -122,15 +122,15 @@
                 android:id="@+id/textView20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="12dp"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="Información Médica:"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.224"
+                app:layout_constraintHorizontal_bias="0.221"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtEdadPaciente" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView9" />
 
             <TextView
                 android:id="@+id/textView21"
@@ -222,7 +222,7 @@
                 android:id="@+id/textView24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="232dp"
+                android:layout_marginTop="12dp"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="Información Hospitalaria:"
                 android:textColor="@color/black"
@@ -230,7 +230,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.278"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtEdadPaciente" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView10" />
 
             <TextView
                 android:id="@+id/textView25"
@@ -304,7 +304,7 @@
                 android:id="@+id/btnGuardarPaciente"
                 android:layout_width="142dp"
                 android:layout_height="48dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="44dp"
                 android:background="@drawable/borde_card"
                 android:fontFamily="@font/poppins_bold"
                 android:paddingLeft="20dp"
@@ -315,6 +315,36 @@
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spHabitacionPaciente" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvMedicamentos"
+                android:layout_width="309dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.49"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtMedicamentosPaciente" />
+
+            <ImageView
+                android:id="@+id/imageView9"
+                android:layout_width="319dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="18dp"
+                android:src="@drawable/linea_gris_1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtEdadPaciente" />
+
+            <ImageView
+                android:id="@+id/imageView10"
+                android:layout_width="319dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="18dp"
+                android:src="@drawable/linea_gris_1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rcvMedicamentos" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

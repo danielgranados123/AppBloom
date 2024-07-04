@@ -391,10 +391,11 @@ class fragment_agregar_paciente_prueba : Fragment() {
                             pacienteEnfermedad.setString(1, )
                             pacienteEnfermedad.setInt(2, enfermedad[spEnfermedades.selectedItemPosition].ID_Enfermedad)
 
-                            val pacienteMedicamento = objConexion?.prepareStatement("insert into tbPacientesMedicamentos (ID_Paciente, ID_Medicamento) values (?, ?)")!!
+                            val pacienteMedicamento = objConexion?.prepareStatement("insert into tbPacientesMedicamentos (ID_Paciente, ID_Medicamento, hora_aplicacion) values (?, ?, ?)")!!
 
                             pacienteMedicamento.setString(1, )
                             pacienteMedicamento.setInt(2, medicamento[spMedicamentos.selectedItemPosition].ID_Medicamento)
+                            pacienteMedicamento.setString(3, txtControlPaciente.text.toString())
                         }
                         Toast.makeText(
                             requireContext(),
