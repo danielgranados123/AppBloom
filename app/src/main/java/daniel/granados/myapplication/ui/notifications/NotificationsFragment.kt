@@ -9,9 +9,18 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import daniel.granados.myapplication.R
 import daniel.granados.myapplication.databinding.FragmentNotificationsBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import modelo.ClaseConexion
+import modelo.DataClassPacientes
+import pacientesHelper.AdaptadorPacientes
 
 class NotificationsFragment : Fragment() {
 
@@ -42,6 +51,50 @@ class NotificationsFragment : Fragment() {
         btnNuevo.setOnClickListener{
             findNavController().navigate(R.id.action_navigation_notifications_to_fragment_agregar_paciente_prueba)
         }
+
+
+        ///////////////////MOSTRAR INGRESOS///////////////
+        val rcvGastos = root.findViewById<RecyclerView>(R.id.rcvPacientes)
+
+        //Asignar layout al RecyclerView
+        rcvGastos.layoutManager = LinearLayoutManager(requireContext())
+
+        //Función para obtener datos
+        fun obtenerDatosGastos(): List<DataClassPacientes> {
+
+            val objConexion = ClaseConexion().cadenaConexion()
+
+            val Statement = objConexion?.createStatement()
+
+            val resultset = Statement?.executeQuery("Select * from tbEnfermedades")!!
+
+            val pacientes = mutableListOf<DataClassPacientes>()
+
+            while (resultset.next()) {
+                val uuid = resultset.getString("UUID_Gasto")
+
+                val tipoGastoIngresoUUID = resultset.getInt("ID_TipoGastoIngreso")
+                val clasificacion = resultset.getString("nombreClasificacion")
+                val fuenteGasto = resultset.getString("UUID_fuenteGasto")
+                val monto = resultset.getDouble("montoGasto")
+                val fecha = resultset.getString("fechaGasto")
+
+                val paciente = DataClassPacientes(uuid, uuidUsuario, tipoGastoIngresoUUID, clasificacion, fuenteGasto, monto, fecha)
+                pacientes.add(paciente)
+            }
+
+            return pacientes
+        }
+
+        //Asignar adaptador
+        CoroutineScope(Dispatchers.IO).launch {
+            val gastosDB = obtenerDatosGastos()
+            withContext(Dispatchers.Main){
+                val miAdapter = AdaptadorPacientes(gastosDB)
+                rcvGastos.adapter = miAdapter
+            }
+        }
+
 
         return root
     }

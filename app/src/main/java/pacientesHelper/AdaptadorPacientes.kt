@@ -72,10 +72,10 @@ class AdaptadorPacientes(private var Datos: List<DataClassPacientes>) : Recycler
     override fun onBindViewHolder(holder: ViewHolderPacientes, position: Int) {
         val item = Datos[position]
         holder.lblApellidoPaciente.text = item.apellidoPaciente
-        holder.lblHabitacion.text = item.habitacion
-        holder.lblHoraControl.text = item.lblHorarioPaciente
+        holder.lblHabitacion.text = item.nombrePaciente
+        holder.lblHoraControl.text = item.nombrePaciente
 
-            holder.imgBorrar.setOnClickListener {
+            holder.imgEliminar.setOnClickListener {
                 //Creamos una alerta
                 //1-Invocamos el contexto
 

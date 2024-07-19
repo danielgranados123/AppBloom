@@ -17,11 +17,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"/>
-
-
         <activity
             android:name=".splash_screen"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:exported="true">
 
         <intent-filter>

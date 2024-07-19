@@ -379,6 +379,8 @@ class fragment_agregar_paciente_prueba : Fragment() {
                             val habitacionCama = idHabitacionCama.toString()
 
 
+
+
                             //Insertar el paciente en la base de datos
                             val objConexion = ClaseConexion().cadenaConexion()
 
@@ -392,12 +394,12 @@ class fragment_agregar_paciente_prueba : Fragment() {
 
                             val pacienteEnfermedad = objConexion?.prepareStatement("insert into tbPacientesEnfermedades (ID_Paciente, ID_Enfermedad) values (?, ?)")!!
 
-                            pacienteEnfermedad.setString(1, )
+                            pacienteEnfermedad.setInt(1, 1 )
                             pacienteEnfermedad.setInt(2, enfermedad[spEnfermedades.selectedItemPosition].ID_Enfermedad)
 
                             val pacienteMedicamento = objConexion?.prepareStatement("insert into tbPacientesMedicamentos (ID_Paciente, ID_Medicamento, hora_aplicacion) values (?, ?, ?)")!!
 
-                            pacienteMedicamento.setString(1, )
+                            pacienteMedicamento.setInt(1, 1)
                             pacienteMedicamento.setInt(2, medicamento[spMedicamentos.selectedItemPosition].ID_Medicamento)
                             pacienteMedicamento.setString(3, txtControlPaciente.text.toString())
                         }
