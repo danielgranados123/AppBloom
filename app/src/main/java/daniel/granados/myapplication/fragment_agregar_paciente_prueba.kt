@@ -105,10 +105,7 @@ class fragment_agregar_paciente_prueba : Fragment() {
             val objConexion = ClaseConexion().cadenaConexion()
 
             // Preparar la consulta SQL para obtener las camas de la habitación seleccionada
-            val selectCamas = objConexion?.prepareStatement(
-                "SELECT id_cama, nombre_cama FROM tbHabitacionesCamas hc " +
-                        "INNER JOIN tbCamas c ON hc.id_Cama = c.ID_Cama WHERE ID_Habitacion = ?"
-            )!!
+            val selectCamas = objConexion?.prepareStatement("SELECT c.id_cama, c.nombre_cama FROM tbHabitacionesCamas hc INNER JOIN tbCamas c ON hc.id_Cama = c.ID_Cama WHERE ID_Habitacion = ?")!!
 
             selectCamas.setInt(1, idHabitacion)
             val resultSet = selectCamas.executeQuery()
