@@ -53,14 +53,14 @@ class NotificationsFragment : Fragment() {
         }
 
 
-        ///////////////////MOSTRAR INGRESOS///////////////
-        val rcvGastos = root.findViewById<RecyclerView>(R.id.rcvPacientes)
+        ///////////////////MOSTRAR PACIENTES EN EL RECYCLERVIEW///////////////
+        val rcvPacientes = root.findViewById<RecyclerView>(R.id.rcvPacientes)
 
         //Asignar layout al RecyclerView
-        rcvGastos.layoutManager = LinearLayoutManager(requireContext())
+        rcvPacientes.layoutManager = LinearLayoutManager(requireContext())
 
         //Función para obtener datos
-        fun obtenerDatosGastos(): List<DataClassPacientes> {
+        /*fun obtenerDatosGastos(): List<DataClassPacientes> {
 
             val objConexion = ClaseConexion().cadenaConexion()
 
@@ -91,9 +91,9 @@ class NotificationsFragment : Fragment() {
             val gastosDB = obtenerDatosGastos()
             withContext(Dispatchers.Main){
                 val miAdapter = AdaptadorPacientes(gastosDB)
-                rcvGastos.adapter = miAdapter
+                rcvPacientes.adapter = miAdapter
             }
-        }
+        }*/
 
 
         return root

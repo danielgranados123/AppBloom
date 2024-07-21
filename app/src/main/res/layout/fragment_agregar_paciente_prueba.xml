@@ -352,6 +352,22 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rcvMedicamentos" />
 
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/imgErrorNombre"
+                android:layout_width="44dp"
+                android:layout_height="46dp"
+
+
+                app:layout_constraintBottom_toBottomOf="@+id/txtNombrePaciente"
+                app:layout_constraintEnd_toEndOf="@+id/txtNombrePaciente"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/txtNombrePaciente"
+                app:layout_constraintTop_toTopOf="@+id/txtNombrePaciente"
+                app:layout_constraintVertical_bias="0.0"
+                app:lottie_rawRes="@raw/error">
+
+            </com.airbnb.lottie.LottieAnimationView>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
