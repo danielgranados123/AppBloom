@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //Oculto el encabezado de la parte de arriba
+        //Oculto el encabezado
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
 
         //supportRequestWindowFeature(Window.FEATURE_NO_TITLE)

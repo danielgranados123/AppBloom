@@ -1,8 +1,8 @@
 //Script de la base de datos
-//Lleva datos de ejemplo para que pueda visualizar todas las herramientas de la aplicaciÃ³n, y que la pueda ver funcionando de una forma mÃ¡s realista.
+//Lleva datos de ejemplo para que pueda visualizar todas las herramientas de la aplicación, y que la pueda ver funcionando de una forma más realista.
 
 ----Tabla para guardar las habitaciones---- 
-//Lo guardo como tipo de dato string/varchar, ya que en algunos lugares las habitaciones se identifican con claves alfanumericas (HabitaciÃ³n 1A, 2B, etc)
+//Lo guardo como tipo de dato string/varchar, ya que en algunos lugares las habitaciones se identifican con claves alfanumericas (Habitación 1A, 2B, etc)
 create table tbHabitaciones( 
     ID_Habitacion number primary key,
     nombre_habitacion varchar2(20) not null
@@ -14,7 +14,7 @@ create sequence habitacion start with 1 increment by 1;
 //Triggers para Habitaciones 
 create or replace trigger TrigHabitacion before insert on tbHabitaciones for each row begin select habitacion.nextval into : new.ID_Habitacion from dual; end;
 
-----Tabla para almacenar los nÃºmeros de cama en cada habitaciÃ³n---- 
+----Tabla para almacenar los números de cama en cada habitación---- 
 create table tbCamas( 
     ID_Cama number primary key,
     nombre_cama varchar2(50) not null 
@@ -26,10 +26,10 @@ create sequence cama start with 1 increment by 1;
 //Triggers para Camas 
 create or replace trigger TrigCama before insert on tbCamas for each row begin select cama.nextval into : new.ID_Cama from dual; end;
 
-/*Interpreto que en los hospitales se utiliza una misma 'clave' para identificar las habitaciones y las camas. Por ejemplo: En las habitaciones A1, B2, C3, a pesar de ser distintas, es posible que todas tengan el mismo nÃºmero de camas. Por lo tanto: HabitaciÃ³n A1 - Camas 1, 2, 3, 4, 5 HabitaciÃ³n B2 - Camas 1, 2, 3, 4, 5 HabitaciÃ³n C3 - Camas 1, 2, 3, 4
+/*Interpreto que en los hospitales se utiliza una misma 'clave' para identificar las habitaciones y las camas. Por ejemplo: En las habitaciones A1, B2, C3, a pesar de ser distintas, es posible que todas tengan el mismo número de camas. Por lo tanto: Habitación A1 - Camas 1, 2, 3, 4, 5 Habitación B2 - Camas 1, 2, 3, 4, 5 Habitación C3 - Camas 1, 2, 3, 4
 
-Y de este modo, se genera una relaciÃ³n de muchos a muchos, ya que
-una misma habitaciÃ³n puede tener varias camas, y cada nÃºmero de cama (que es
+Y de este modo, se genera una relación de muchos a muchos, ya que
+una misma habitación puede tener varias camas, y cada número de cama (que es
 lo que se almacena en la tabla) puede estar en varias habitaciones.*/
 create table tbHabitacionesCamas( 
     ID_HabitacionCama number primary key, 
@@ -69,7 +69,7 @@ create sequence medicamento start with 1 increment by 1;
 //Triggers para medicamentos 
 create trigger TrigMedicamento before insert on tbMedicamentos for each row begin select medicamento.nextval into : new.ID_Medicamento from dual; end;
 
-----Tabla para guardar los pacientes con su informaciÃ³n principal---- 
+----Tabla para guardar los pacientes con su información principal---- 
 create table tbPacientes( 
     ID_Paciente varchar2(50) primary key, 
     nombres_paciente varchar2(30) not null, 
@@ -147,29 +147,29 @@ into tbHabitacionesCamas (ID_Habitacion, ID_Cama) values ('12','1') into tbHabit
 
 select * from tbHabitacionesCamas;
 
-insert all into tbEnfermedades (nombre_enfermedad) values ('NeumonÃ­a') into tbEnfermedades (nombre_enfermedad) values ('Epilepsia') into tbEnfermedades (nombre_enfermedad) values ('Quemaduras Primer Grado') into tbEnfermedades (nombre_enfermedad) values ('Quemaduras Segundo Grado') into tbEnfermedades (nombre_enfermedad) values ('Quemaduras Tercer Grado') into tbEnfermedades (nombre_enfermedad) values ('CÃ¡ncer') into tbEnfermedades (nombre_enfermedad) values ('Apendicitis') into tbEnfermedades (nombre_enfermedad) values ('Traumatismo') into tbEnfermedades (nombre_enfermedad) values ('Diabetes Tipo 1') into tbEnfermedades (nombre_enfermedad) values ('Diabetes Tipo 2') into tbEnfermedades (nombre_enfermedad) values ('Asma') select * from dual;
+insert all into tbEnfermedades (nombre_enfermedad) values ('Neumonía') into tbEnfermedades (nombre_enfermedad) values ('Epilepsia') into tbEnfermedades (nombre_enfermedad) values ('Quemaduras Primer Grado') into tbEnfermedades (nombre_enfermedad) values ('Quemaduras Segundo Grado') into tbEnfermedades (nombre_enfermedad) values ('Quemaduras Tercer Grado') into tbEnfermedades (nombre_enfermedad) values ('Cáncer') into tbEnfermedades (nombre_enfermedad) values ('Apendicitis') into tbEnfermedades (nombre_enfermedad) values ('Traumatismo') into tbEnfermedades (nombre_enfermedad) values ('Diabetes Tipo 1') into tbEnfermedades (nombre_enfermedad) values ('Diabetes Tipo 2') into tbEnfermedades (nombre_enfermedad) values ('Asma') select * from dual;
 
 select * from tbEnfermedades;
 
-insert all into tbMedicamentos (nombre_medicamento) values ('Amoxicilina') into tbMedicamentos (nombre_medicamento) values ('Ceftriaxona') into tbMedicamentos (nombre_medicamento) values ('Azitromicina') into tbMedicamentos (nombre_medicamento) values ('Paracetamol') into tbMedicamentos (nombre_medicamento) values ('Ibuprofeno') into tbMedicamentos (nombre_medicamento) values ('Morfina') into tbMedicamentos (nombre_medicamento) values ('Insulina lispro') into tbMedicamentos (nombre_medicamento) values ('Insulina aspart') into tbMedicamentos (nombre_medicamento) values ('Insulina glargina') into tbMedicamentos (nombre_medicamento) values ('Insulina detemir') into tbMedicamentos (nombre_medicamento) values ('FenitoÃ­na') into tbMedicamentos (nombre_medicamento) values ('Fentanilo') select * from dual;
+insert all into tbMedicamentos (nombre_medicamento) values ('Amoxicilina') into tbMedicamentos (nombre_medicamento) values ('Ceftriaxona') into tbMedicamentos (nombre_medicamento) values ('Azitromicina') into tbMedicamentos (nombre_medicamento) values ('Paracetamol') into tbMedicamentos (nombre_medicamento) values ('Ibuprofeno') into tbMedicamentos (nombre_medicamento) values ('Morfina') into tbMedicamentos (nombre_medicamento) values ('Insulina lispro') into tbMedicamentos (nombre_medicamento) values ('Insulina aspart') into tbMedicamentos (nombre_medicamento) values ('Insulina glargina') into tbMedicamentos (nombre_medicamento) values ('Insulina detemir') into tbMedicamentos (nombre_medicamento) values ('Fenitoína') into tbMedicamentos (nombre_medicamento) values ('Fentanilo') select * from dual;
 
 select * from tbMedicamentos;
 
 insert all 
-into tbPacientes (id_paciente, nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values ('FAA6C2017A20429395E3A6E94EBF55F4', 'Daniel Isaac', 'Granados CaÃ±as', 4, 1) 
-into tbPacientes (id_paciente, nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values ('990FCF6268BA4B3B9C3D2EF16E15C8AE', 'Bryan Exequiel', 'Miranda RodrÃ­guez', 5, 7) 
+into tbPacientes (id_paciente, nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values ('FAA6C2017A20429395E3A6E94EBF55F4', 'Daniel Isaac', 'Granados Cañas', 4, 1) 
+into tbPacientes (id_paciente, nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values ('990FCF6268BA4B3B9C3D2EF16E15C8AE', 'Bryan Exequiel', 'Miranda Rodríguez', 5, 7) 
 into tbPacientes (id_paciente, nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values ('4B87804DEADA4C5C8E24BB1C678DE6BF', 'Mirna', 'Espinoza Anzora', 3, 13) 
-into tbPacientes (id_paciente, nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values ('69352A5EDCF54B718896ABF6FEB2C22E', 'Emerson Alexander', 'GonzÃ¡lez RodrÃ­guez', 4, 19)
+into tbPacientes (id_paciente, nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values ('69352A5EDCF54B718896ABF6FEB2C22E', 'Emerson Alexander', 'González Rodríguez', 4, 19)
 
-into tbPacientes (id_paciente, nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values ('5F7284144F664B95B70BF652A24F41AA', 'Manuel Alejandro', 'Ortega RodrÃ­guez', 6, 25) 
-into tbPacientes (id_paciente, nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values ('98D389BEB24D4AFD97B184E7E22BD6B6', 'Bryan Eduardo', 'Cornejo PÃ©rez', 7, 30) 
-into tbPacientes (id_paciente, nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values ('3BC6A55BCDA8462AA9A058CF87FFB325', 'Rodrigo AndrÃ©s', 'Hurtado Quezada', 8, 35) 
-into tbPacientes (id_paciente, nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values ('07A4A2E84B9A4E43A46C85098788E4CC', 'Rodrigo JosuÃ©', 'Monterrosa Jorge', 9,40)
+into tbPacientes (id_paciente, nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values ('5F7284144F664B95B70BF652A24F41AA', 'Manuel Alejandro', 'Ortega Rodríguez', 6, 25) 
+into tbPacientes (id_paciente, nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values ('98D389BEB24D4AFD97B184E7E22BD6B6', 'Bryan Eduardo', 'Cornejo Pérez', 7, 30) 
+into tbPacientes (id_paciente, nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values ('3BC6A55BCDA8462AA9A058CF87FFB325', 'Rodrigo Andrés', 'Hurtado Quezada', 8, 35) 
+into tbPacientes (id_paciente, nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values ('07A4A2E84B9A4E43A46C85098788E4CC', 'Rodrigo Josué', 'Monterrosa Jorge', 9,40)
 
 into tbPacientes (id_paciente, nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values ('CFD9420E4F484620A6D2088A59AE862D', 'David Enrique', 'Castillo Oliva', 12, 45) 
 into tbPacientes (id_paciente, nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values ('36E3659A818F4F3B8DE91BA53925E8B0', 'Amaris Lourdes', 'Osorio Canales', 10, 49) 
-into tbPacientes (id_paciente, nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values ('400F7DB029F24CEF827EC9A612616B94', 'Edenilson Alexander', 'Amaya BenÃ­tez', 11, 53) 
-into tbPacientes (id_paciente, nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values ('42ED3DB064794EAC94F07E45ABEFB2B0', 'JosÃ© Luis', 'Iraheta MarroquÃ­n', 12, 57) 
+into tbPacientes (id_paciente, nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values ('400F7DB029F24CEF827EC9A612616B94', 'Edenilson Alexander', 'Amaya Benítez', 11, 53) 
+into tbPacientes (id_paciente, nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values ('42ED3DB064794EAC94F07E45ABEFB2B0', 'José Luis', 'Iraheta Marroquín', 12, 57) 
 select * from dual;
 
 select * from tbPacientes;

@@ -207,10 +207,10 @@
 
             <EditText
                 android:id="@+id/txtControlPaciente"
-                android:layout_width="133dp"
+                android:layout_width="68dp"
                 android:layout_height="44dp"
                 android:layout_marginTop="36dp"
-                android:layout_marginEnd="48dp"
+                android:layout_marginEnd="112dp"
                 android:background="@drawable/bg_form"
                 android:ems="10"
                 android:focusable="false"
@@ -352,21 +352,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rcvMedicamentos" />
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/imgErrorNombre"
-                android:layout_width="44dp"
-                android:layout_height="46dp"
-
-
-                app:layout_constraintBottom_toBottomOf="@+id/txtNombrePaciente"
-                app:layout_constraintEnd_toEndOf="@+id/txtNombrePaciente"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/txtNombrePaciente"
-                app:layout_constraintTop_toTopOf="@+id/txtNombrePaciente"
-                app:layout_constraintVertical_bias="0.0"
-                app:lottie_rawRes="@raw/error">
-
-            </com.airbnb.lottie.LottieAnimationView>
+            <ImageView
+                android:id="@+id/btnAgregarMedicamento"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginTop="40dp"
+                android:src="@drawable/ic_agregar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.31"
+                app:layout_constraintStart_toEndOf="@+id/txtControlPaciente"
+                app:layout_constraintTop_toBottomOf="@+id/txtEnfermedadPaciente" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

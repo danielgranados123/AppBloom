@@ -11,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TimePicker
 import android.widget.Toast
@@ -24,6 +25,7 @@ import modelo.DataClassEnfermedades
 import modelo.DataClassHabitaciones
 import modelo.DataClassHabitacionesCamas
 import modelo.DataClassMedicamentos
+import java.sql.Types
 import java.util.Calendar
 import java.util.Locale
 import java.util.UUID
@@ -40,6 +42,9 @@ private const val ARG_PARAM2 = "param2"
  */
 class fragment_agregar_paciente_prueba : Fragment() {
 
+    companion object variablesUsuarios {
+        lateinit var idUsuario: String
+    }
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -73,7 +78,7 @@ class fragment_agregar_paciente_prueba : Fragment() {
         val spCamas = root.findViewById<Spinner>(R.id.spCamasPaciente)
         val btnGuardarPaciente = root.findViewById<Button>(R.id.btnGuardarPaciente)
         val txtControlPaciente = root.findViewById<EditText>(R.id.txtControlPaciente)
-
+        val btnAgregarMedicamento = root.findViewById<ImageView>(R.id.btnAgregarMedicamento)
 
 
         // Función para obtener las habitaciones
@@ -105,7 +110,8 @@ class fragment_agregar_paciente_prueba : Fragment() {
             val objConexion = ClaseConexion().cadenaConexion()
 
             // Preparar la consulta SQL para obtener las camas de la habitación seleccionada
-            val selectCamas = objConexion?.prepareStatement("SELECT c.id_cama, c.nombre_cama FROM tbHabitacionesCamas hc INNER JOIN tbCamas c ON hc.id_Cama = c.ID_Cama WHERE ID_Habitacion = ?")!!
+            val selectCamas =
+                objConexion?.prepareStatement("SELECT c.id_cama, c.nombre_cama FROM tbHabitacionesCamas hc INNER JOIN tbCamas c ON hc.id_Cama = c.ID_Cama WHERE ID_Habitacion = ?")!!
 
             selectCamas.setInt(1, idHabitacion)
             val resultSet = selectCamas.executeQuery()
@@ -135,7 +141,8 @@ class fragment_agregar_paciente_prueba : Fragment() {
                 val idHabitacionCama = resultSet.getInt("ID_HabitacionCama")
                 val idHabitacion = resultSet.getInt("ID_Habitacion")
                 val idCama = resultSet.getInt("ID_Cama")
-                val habitacionCama = DataClassHabitacionesCamas(idHabitacionCama, idHabitacion, idCama)
+                val habitacionCama =
+                    DataClassHabitacionesCamas(idHabitacionCama, idHabitacion, idCama)
                 listaHabitacionesCamas.add(habitacionCama)
             }
 
@@ -160,7 +167,12 @@ class fragment_agregar_paciente_prueba : Fragment() {
 
         //Listener para el spinner de habitaciones
         spHabitaciones.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 if (position != AdapterView.INVALID_POSITION) {
                     // Obtener el ID de la habitación seleccionada
                     val idHabitacionSeleccionada = listaHabitaciones[position].ID_Habitacion
@@ -202,7 +214,12 @@ class fragment_agregar_paciente_prueba : Fragment() {
 
         //Spinner de camas
         spCamas.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 if (position != AdapterView.INVALID_POSITION) {
                     // Obtener el ID de la cama seleccionada
                     val idCamaSeleccionada = listaCamas[position].ID_Cama
@@ -261,9 +278,9 @@ class fragment_agregar_paciente_prueba : Fragment() {
         }
 
         //Sp de enfermedades
-        fun obtenerEnfermedades(): List<DataClassEnfermedades>{
+        fun obtenerEnfermedades(): List<DataClassEnfermedades> {
             //Crear un objeto de la clase conexion
-            val objConexion= ClaseConexion().cadenaConexion()
+            val objConexion = ClaseConexion().cadenaConexion()
 
             //crepo un Statement que me ejecutara el Select
             val Statement = objConexion?.createStatement()
@@ -271,9 +288,9 @@ class fragment_agregar_paciente_prueba : Fragment() {
 
             val resulset = Statement?.executeQuery("Select * from tbEnfermedades")!!
 
-            val listadoEnfermedades= mutableListOf<DataClassEnfermedades>()
+            val listadoEnfermedades = mutableListOf<DataClassEnfermedades>()
 
-            while (resulset.next()){
+            while (resulset.next()) {
                 val id = resulset.getInt("id_enfermedad")
                 val nombre = resulset.getString("nombre_enfermedad")
                 val enfermedad = DataClassEnfermedades(id, nombre)
@@ -290,27 +307,31 @@ class fragment_agregar_paciente_prueba : Fragment() {
             val listadoDeEnfermedades = obtenerEnfermedades()
             val nombreEnfermedad = listadoDeEnfermedades.map { it.nombre_enfermedad }
 
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 //2-Crear y modificar el adaptador
-                val miAdaptador = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, nombreEnfermedad)
+                val miAdaptador = ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_spinner_dropdown_item,
+                    nombreEnfermedad
+                )
 
                 spEnfermedades.adapter = miAdaptador
             }
         }
 
         //Sp de medicamentos
-        fun obtenerMedicamentos(): List<DataClassMedicamentos>{
+        fun obtenerMedicamentos(): List<DataClassMedicamentos> {
             //Crear un objeto de la clase conexion
-            val objConexion= ClaseConexion().cadenaConexion()
+            val objConexion = ClaseConexion().cadenaConexion()
 
             //crepo un Statement que me ejecutara el Select
             val Statement = objConexion?.createStatement()
 
             val resulset = Statement?.executeQuery("Select * from tbMedicamentos")!!
 
-            val listadoMedicamentos= mutableListOf<DataClassMedicamentos>()
+            val listadoMedicamentos = mutableListOf<DataClassMedicamentos>()
 
-            while (resulset.next()){
+            while (resulset.next()) {
                 val id = resulset.getInt("id_medicamento")
                 val nombre = resulset.getString("nombre_medicamento")
                 val medicamento = DataClassMedicamentos(id, nombre)
@@ -327,122 +348,92 @@ class fragment_agregar_paciente_prueba : Fragment() {
             val listadoDeMedicamentos = obtenerMedicamentos()
             val nombreMedicamento = listadoDeMedicamentos.map { it.nombre_medicamento }
 
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 //2-Crear y modificar el adaptador
-                val miAdaptador = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, nombreMedicamento)
+                val miAdaptador = ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_spinner_dropdown_item,
+                    nombreMedicamento
+                )
 
                 spMedicamentos.adapter = miAdaptador
             }
         }
 
         btnGuardarPaciente.setOnClickListener {
+            idUsuario = UUID.randomUUID().toString()
+            val idPaciente = idUsuario
+
             //Validaciones
-            if (txtNombrePaciente.text.toString().isEmpty() ||
-                txtApellidoPaciente.text.toString().isEmpty() ||
-                txtEdad.text.toString().isEmpty() ||
-                txtControlPaciente.text.toString().isEmpty() ||
-                spEnfermedades.selectedItemPosition == 0 ||
-                spMedicamentos.selectedItemPosition == 0 ||
-                spHabitaciones.selectedItemPosition == 0 ||
-                spCamas.selectedItemPosition == 0
-                ) {
+
+
+            val idCamaSeleccionada = listaCamas[spCamas.selectedItemPosition].ID_Cama
+
+            //Buscar el ID_HabitacionCama que coincida con la habitación y la cama seleccionadas
+            CoroutineScope(Dispatchers.IO).launch {
+                val listaHabitacionesCamas = obtenerHabitacionesCamas()
+                val idHabitacionSeleccionada =
+                    listaHabitaciones[spHabitaciones.selectedItemPosition].ID_Habitacion
+                val idHabitacionCama = listaHabitacionesCamas.find {
+                    it.ID_Habitacion == idHabitacionSeleccionada && it.ID_Cama == idCamaSeleccionada
+                }?.ID_HabitacionCama
+
+                if (idHabitacionCama != null) {
+
+                    //Enfermedades
+                    val enfermedad = obtenerEnfermedades()
+
+                    //Medicamentos
+                    val medicamento = obtenerMedicamentos()
+
+                    //Habitaciones y Camas
+                    val habitacionCama = idHabitacionCama.toString()
+
+                    //Insertar el paciente
+                    val objConexion = ClaseConexion().cadenaConexion()
+
+                    val agregarPaciente =
+                        objConexion?.prepareStatement("insert into tbPacientes (id_Paciente,nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values (?, ?, ?, ?, ?)")!!
+
+                    agregarPaciente.setString(1, idPaciente)
+                    agregarPaciente.setString(2, txtNombrePaciente.text.toString())
+                    agregarPaciente.setString(3, txtApellidoPaciente.text.toString())
+                    agregarPaciente.setString(4, txtEdad.text.toString())
+                    agregarPaciente.setString(5, habitacionCama)
+
+
+                    val pacienteEnfermedad =
+                        objConexion?.prepareStatement("insert into tbPacientesEnfermedades (ID_Paciente, ID_Enfermedad) values (?, ?)")!!
+                    pacienteEnfermedad.setString(1, idPaciente)
+                    pacienteEnfermedad.setInt(
+                        2,
+                        enfermedad[spEnfermedades.selectedItemPosition].ID_Enfermedad
+                    )
+                    pacienteEnfermedad.executeUpdate()
+
+                    val pacienteMedicamento =
+                        objConexion?.prepareStatement("insert into tbPacientesMedicamentos (ID_Paciente, ID_Medicamento, hora_aplicacion) values (?, ?, ?)")!!
+                    pacienteMedicamento.setString(1, idPaciente)
+                    pacienteMedicamento.setInt(
+                        2,
+                        medicamento[spMedicamentos.selectedItemPosition].ID_Medicamento
+                    )
+                    pacienteMedicamento.setString(3, txtControlPaciente.text.toString())
+                }
+
+                withContext(Dispatchers.Main) {
                     Toast.makeText(
                         requireContext(),
-                        "Verifica que todos los campos estén completos.",
+                        "Paciente agregado correctamente.",
                         Toast.LENGTH_SHORT
                     ).show()
-            } else {
-
-                val idCamaSeleccionada = listaCamas[spCamas.selectedItemPosition].ID_Cama
-
-                //Buscar el ID_HabitacionCama que coincida con la habitación y la cama seleccionadas
-                CoroutineScope(Dispatchers.IO).launch {
-                    val listaHabitacionesCamas = obtenerHabitacionesCamas()
-                    val idHabitacionSeleccionada = listaHabitaciones[spHabitaciones.selectedItemPosition].ID_Habitacion
-                    val idHabitacionCama = listaHabitacionesCamas.find {
-                        it.ID_Habitacion == idHabitacionSeleccionada && it.ID_Cama == idCamaSeleccionada
-                    }?.ID_HabitacionCama
-
-                    withContext(Dispatchers.Main) {
-                        if (idHabitacionCama != null) {
-
-                            //Enfermedades
-                            val enfermedad = obtenerEnfermedades()
-
-                            //Medicamentos
-                            val medicamento = obtenerMedicamentos()
-
-                            //Habitaciones y Camas
-                            val habitacionCama = idHabitacionCama.toString()
-
-                            //Insertar el paciente
-                            val objConexion = ClaseConexion().cadenaConexion()
-
-                            val agregarPaciente = objConexion?.prepareStatement("insert into tbPacientes (nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values (?, ?, ?, ?)")!!
-
-                            agregarPaciente.setString(1, txtNombrePaciente.text.toString())
-                            agregarPaciente.setString(2, txtApellidoPaciente.text.toString())
-                            agregarPaciente.setString(3, txtEdad.text.toString())
-                            agregarPaciente.setString(4, habitacionCama)
-                            agregarPaciente.executeQuery()
-
-                            //Lo uso para obtener el id del paciente y usarlo en las tablas intermedias
-                            val generatedKeys = agregarPaciente.generatedKeys
-
-                            var idPaciente: Int? = null
-                            if (generatedKeys.next()) {
-                                idPaciente = generatedKeys.getInt(1)
-                            }
-
-                            //Me aseguro de si obtiene el id
-                            if (idPaciente == null) {
-                                throw IllegalStateException("Error al obtener el id del paciente.")
-                            }
-
-
-                            val pacienteEnfermedad = objConexion?.prepareStatement("insert into tbPacientesEnfermedades (ID_Paciente, ID_Enfermedad) values (?, ?)")!!
-                            pacienteEnfermedad.setInt(1, idPaciente)
-                            pacienteEnfermedad.setInt(2, enfermedad[spEnfermedades.selectedItemPosition].ID_Enfermedad)
-                            pacienteEnfermedad.executeUpdate()
-
-                            val pacienteMedicamento = objConexion?.prepareStatement("insert into tbPacientesMedicamentos (ID_Paciente, ID_Medicamento, hora_aplicacion) values (?, ?, ?)")!!
-
-                            pacienteMedicamento.setInt(1, idPaciente)
-                            pacienteMedicamento.setInt(2, medicamento[spMedicamentos.selectedItemPosition].ID_Medicamento)
-                            pacienteMedicamento.setString(3, txtControlPaciente.text.toString())
-                        }
-                        Toast.makeText(
-                            requireContext(),
-                            "Paciente agregado correctamente.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                        }
                 }
-                }
-
-
-            return root
+            }
         }
 
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment fragment_agregar_paciente_prueba.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            fragment_agregar_paciente_prueba().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+
+        return root
     }
+
 }
