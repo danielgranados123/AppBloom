@@ -142,7 +142,7 @@ class fragment_agregar_paciente_prueba : Fragment() {
             return listaHabitacionesCamas
         }
 
-    //En el método donde inicializas los spinners y sus listeners
+        //En el método donde inicializas los spinners y sus listeners
         CoroutineScope(Dispatchers.IO).launch {
             // Obtener los datos de las habitaciones
             listaHabitaciones = obtenerHabitaciones()
@@ -158,7 +158,7 @@ class fragment_agregar_paciente_prueba : Fragment() {
             }
         }
 
-    //Listener para el spinner de habitaciones
+        //Listener para el spinner de habitaciones
         spHabitaciones.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (position != AdapterView.INVALID_POSITION) {
@@ -240,16 +240,19 @@ class fragment_agregar_paciente_prueba : Fragment() {
                 { _: TimePicker, hourOfDay: Int, minute: Int ->
                     cal.set(Calendar.HOUR_OF_DAY, hourOfDay)
                     cal.set(Calendar.MINUTE, minute)
-                    val format = SimpleDateFormat("hh:mm a", Locale.getDefault())
-                    val formattedTime = format.format(cal.time)
-                    textView.setText(formattedTime)
+
+                    //Como en la base de datos el tipo de dato es timeStamp:
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                    val formattedDateTime = dateFormat.format(cal.time)
+
+                    textView.setText(formattedDateTime)
                 },
                 hour,
                 minute,
                 false
-                )
+            )
 
-                timePickerDialog.show()
+            timePickerDialog.show()
         }
 
         //El txt pasa a ser la hora que el usuario selecciona
@@ -264,6 +267,7 @@ class fragment_agregar_paciente_prueba : Fragment() {
 
             //crepo un Statement que me ejecutara el Select
             val Statement = objConexion?.createStatement()
+
 
             val resulset = Statement?.executeQuery("Select * from tbEnfermedades")!!
 
@@ -281,7 +285,6 @@ class fragment_agregar_paciente_prueba : Fragment() {
         }
 
         //Programar Spinner para que muestre datos del select
-
         CoroutineScope(Dispatchers.IO).launch {
             //Obtengo los datos
             val listadoDeEnfermedades = obtenerEnfermedades()
@@ -319,7 +322,6 @@ class fragment_agregar_paciente_prueba : Fragment() {
         }
 
         //Programar Spinner para que muestre datos del select
-
         CoroutineScope(Dispatchers.IO).launch {
             //Obtengo los datos
             val listadoDeMedicamentos = obtenerMedicamentos()
@@ -332,8 +334,6 @@ class fragment_agregar_paciente_prueba : Fragment() {
                 spMedicamentos.adapter = miAdaptador
             }
         }
-
-
 
         btnGuardarPaciente.setOnClickListener {
             //Validaciones
@@ -375,10 +375,7 @@ class fragment_agregar_paciente_prueba : Fragment() {
                             //Habitaciones y Camas
                             val habitacionCama = idHabitacionCama.toString()
 
-
-
-
-                            //Insertar el paciente en la base de datos
+                            //Insertar el paciente
                             val objConexion = ClaseConexion().cadenaConexion()
 
                             val agregarPaciente = objConexion?.prepareStatement("insert into tbPacientes (nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values (?, ?, ?, ?)")!!
@@ -389,14 +386,28 @@ class fragment_agregar_paciente_prueba : Fragment() {
                             agregarPaciente.setString(4, habitacionCama)
                             agregarPaciente.executeQuery()
 
-                            val pacienteEnfermedad = objConexion?.prepareStatement("insert into tbPacientesEnfermedades (ID_Paciente, ID_Enfermedad) values (?, ?)")!!
+                            //Lo uso para obtener el id del paciente y usarlo en las tablas intermedias
+                            val generatedKeys = agregarPaciente.generatedKeys
 
-                            pacienteEnfermedad.setInt(1, 1 )
+                            var idPaciente: Int? = null
+                            if (generatedKeys.next()) {
+                                idPaciente = generatedKeys.getInt(1)
+                            }
+
+                            //Me aseguro de si obtiene el id
+                            if (idPaciente == null) {
+                                throw IllegalStateException("Error al obtener el id del paciente.")
+                            }
+
+
+                            val pacienteEnfermedad = objConexion?.prepareStatement("insert into tbPacientesEnfermedades (ID_Paciente, ID_Enfermedad) values (?, ?)")!!
+                            pacienteEnfermedad.setInt(1, idPaciente)
                             pacienteEnfermedad.setInt(2, enfermedad[spEnfermedades.selectedItemPosition].ID_Enfermedad)
+                            pacienteEnfermedad.executeUpdate()
 
                             val pacienteMedicamento = objConexion?.prepareStatement("insert into tbPacientesMedicamentos (ID_Paciente, ID_Medicamento, hora_aplicacion) values (?, ?, ?)")!!
 
-                            pacienteMedicamento.setInt(1, 1)
+                            pacienteMedicamento.setInt(1, idPaciente)
                             pacienteMedicamento.setInt(2, medicamento[spMedicamentos.selectedItemPosition].ID_Medicamento)
                             pacienteMedicamento.setString(3, txtControlPaciente.text.toString())
                         }
