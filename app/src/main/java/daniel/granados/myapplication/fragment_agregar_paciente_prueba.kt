@@ -419,7 +419,7 @@ class fragment_agregar_paciente_prueba : Fragment() {
                     val pacienteMedicamento = objConexion?.prepareStatement("insert into tbPacientesMedicamentos (ID_Paciente, ID_Medicamento, hora_aplicacion) values (?, ?, ?)")!!
                     pacienteMedicamento.setString(1, idPaciente)
                     pacienteMedicamento.setInt(2, medicamento[spMedicamentos.selectedItemPosition].ID_Medicamento)
-                    pacienteMedicamento.setTimestamp(3, txtControlPaciente)
+                    pacienteMedicamento.setString(3, txtControlPaciente.text.toString())
 
                     pacienteMedicamento.executeUpdate()
                 }

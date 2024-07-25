@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import daniel.granados.myapplication.R
 import daniel.granados.myapplication.databinding.FragmentNotificationsBinding
+import daniel.granados.myapplication.fragment_agregar_paciente_prueba
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -52,6 +53,8 @@ class NotificationsFragment : Fragment() {
             findNavController().navigate(R.id.action_navigation_notifications_to_fragment_agregar_paciente_prueba)
         }
 
+        val uuidUsuario = fragment_agregar_paciente_prueba.variablesUsuarios.idUsuario
+
 
         ///////////////////MOSTRAR PACIENTES EN EL RECYCLERVIEW///////////////
         val rcvPacientes = root.findViewById<RecyclerView>(R.id.rcvPacientes)
@@ -60,26 +63,25 @@ class NotificationsFragment : Fragment() {
         rcvPacientes.layoutManager = LinearLayoutManager(requireContext())
 
         //Función para obtener datos
-        /*fun obtenerDatosGastos(): List<DataClassPacientes> {
+        fun obtenerPacientes(): List<DataClassPacientes> {
 
             val objConexion = ClaseConexion().cadenaConexion()
 
-            val Statement = objConexion?.createStatement()
+            val statement = objConexion?.prepareStatement("Select p.apellidos_paciente, h.nombre_habitacion, pm.hora_aplicacion from tbPacientes p inner join tbHabitaciones h on p.ID_HabitacionCama = h.ID_Habitacion inner join tbPacientesMedicamentos pm on p.id_Paciente = pm.ID_Paciente where id_paciente = ?")
+            statement?.setString(1, uuidUsuario)
 
-            val resultset = Statement?.executeQuery("Select * from tbEnfermedades")!!
-
+            val resultset = statement?.executeQuery()!!
             val pacientes = mutableListOf<DataClassPacientes>()
 
             while (resultset.next()) {
-                val uuid = resultset.getString("UUID_Gasto")
+                val id_paciente = resultset.getString("id_paciente")
+                val nombre_paciente = resultset.getString("nombres_paciente")
+                val apellido_paciente = resultset.getString("apellidos_paciente")
+                val edad_paciente = resultset.getInt("edad_paciente")
+                val habitacionCama = resultset.getString("habitacionCama")
+                val control = resultset.getTimestamp("hora_aplicacion")
 
-                val tipoGastoIngresoUUID = resultset.getInt("ID_TipoGastoIngreso")
-                val clasificacion = resultset.getString("nombreClasificacion")
-                val fuenteGasto = resultset.getString("UUID_fuenteGasto")
-                val monto = resultset.getDouble("montoGasto")
-                val fecha = resultset.getString("fechaGasto")
-
-                val paciente = DataClassPacientes(uuid, uuidUsuario, tipoGastoIngresoUUID, clasificacion, fuenteGasto, monto, fecha)
+                val paciente = DataClassPacientes(id_paciente, nombre_paciente, apellido_paciente, edad_paciente, habitacionCama, control)
                 pacientes.add(paciente)
             }
 
@@ -88,12 +90,12 @@ class NotificationsFragment : Fragment() {
 
         //Asignar adaptador
         CoroutineScope(Dispatchers.IO).launch {
-            val gastosDB = obtenerDatosGastos()
+            val pacientes = obtenerPacientes()
             withContext(Dispatchers.Main){
-                val miAdapter = AdaptadorPacientes(gastosDB)
+                val miAdapter = AdaptadorPacientes(pacientes)
                 rcvPacientes.adapter = miAdapter
             }
-        }*/
+        }
 
 
         return root

@@ -30,14 +30,14 @@ class AdaptadorPacientes(private var Datos: List<DataClassPacientes>) : Recycler
         notifyDataSetChanged()
     }
 
-    fun eliminarPacientes(idPaciente: Int, position: Int) {
+    fun eliminarPacientes(idPaciente: String, position: Int) {
         val listaDatos = Datos .toMutableList()
         listaDatos.removeAt(position)
 
         CoroutineScope(Dispatchers.IO).launch {
             val objConexion = ClaseConexion().cadenaConexion()
             val borrarPaciente = objConexion?.prepareStatement("delete from tbPacientes where ID_Paciente = ?")!!
-            borrarPaciente.setInt(1, idPaciente)
+            borrarPaciente.setString(1, idPaciente)
             borrarPaciente.executeUpdate()
 
             val commit = objConexion.prepareStatement( "commit")!!
@@ -75,7 +75,7 @@ class AdaptadorPacientes(private var Datos: List<DataClassPacientes>) : Recycler
         holder.lblHabitacion.text = item.nombrePaciente
         holder.lblHoraControl.text = item.nombrePaciente
 
-            holder.imgEliminar.setOnClickListener {
+            holder.imgEliminar.setOnClickListener{
                 //Creamos una alerta
                 //1-Invocamos el contexto
 
