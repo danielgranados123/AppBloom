@@ -31,6 +31,9 @@ import java.sql.Types
 import java.util.Calendar
 import java.util.Locale
 import java.util.UUID
+import java.sql.*
+import java.time.*
+import java.time.format.DateTimeFormatter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -421,7 +424,12 @@ class fragment_agregar_paciente_prueba : Fragment() {
                     val pacienteMedicamento = objConexion?.prepareStatement("insert into tbPacientesMedicamentos (ID_Paciente, ID_Medicamento, hora_aplicacion) values (?, ?, ?)")!!
                     pacienteMedicamento.setString(1, idUsuario)
                     pacienteMedicamento.setInt(2, medicamento[spMedicamentos.selectedItemPosition].ID_Medicamento)
-                    pacienteMedicamento.setString(3, txtControlPaciente.text.toString())
+                    val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss" ).parse(txtControlPaciente.text.toString())
+                    val stamp = Timestamp(date.time)
+                    pacienteMedicamento.setTimestamp(3,  stamp)
+
+                    println("esto eslo que mando ${txtControlPaciente.text.toString()}")
+
 
                     pacienteMedicamento.executeUpdate()
                 }
