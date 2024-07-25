@@ -25,6 +25,7 @@ import modelo.DataClassEnfermedades
 import modelo.DataClassHabitaciones
 import modelo.DataClassHabitacionesCamas
 import modelo.DataClassMedicamentos
+import java.sql.Timestamp
 import java.sql.Types
 import java.util.Calendar
 import java.util.Locale
@@ -266,10 +267,16 @@ class fragment_agregar_paciente_prueba : Fragment() {
                 },
                 hour,
                 minute,
-                false
+                true
             )
 
             timePickerDialog.show()
+        }
+
+        fun stringToTimestamp(dateTimeString: String): Timestamp {
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+            val parsedDate = dateFormat.parse(dateTimeString)
+            return Timestamp(parsedDate.time)
         }
 
         //El txt pasa a ser la hora que el usuario selecciona
@@ -318,6 +325,7 @@ class fragment_agregar_paciente_prueba : Fragment() {
                 spEnfermedades.adapter = miAdaptador
             }
         }
+
 
         //Sp de medicamentos
         fun obtenerMedicamentos(): List<DataClassMedicamentos> {
@@ -395,33 +403,33 @@ class fragment_agregar_paciente_prueba : Fragment() {
                     val agregarPaciente =
                         objConexion?.prepareStatement("insert into tbPacientes (id_Paciente,nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values (?, ?, ?, ?, ?)")!!
 
+
                     agregarPaciente.setString(1, idPaciente)
                     agregarPaciente.setString(2, txtNombrePaciente.text.toString())
                     agregarPaciente.setString(3, txtApellidoPaciente.text.toString())
                     agregarPaciente.setString(4, txtEdad.text.toString())
                     agregarPaciente.setString(5, habitacionCama)
+                    agregarPaciente.executeUpdate()
 
-
-                    val pacienteEnfermedad =
-                        objConexion?.prepareStatement("insert into tbPacientesEnfermedades (ID_Paciente, ID_Enfermedad) values (?, ?)")!!
+                    val pacienteEnfermedad = objConexion?.prepareStatement("insert into tbPacientesEnfermedades (ID_Paciente, ID_Enfermedad) values (?, ?)")!!
                     pacienteEnfermedad.setString(1, idPaciente)
-                    pacienteEnfermedad.setInt(
-                        2,
-                        enfermedad[spEnfermedades.selectedItemPosition].ID_Enfermedad
-                    )
+                    pacienteEnfermedad.setInt(2, enfermedad[spEnfermedades.selectedItemPosition].ID_Enfermedad)
                     pacienteEnfermedad.executeUpdate()
 
-                    val pacienteMedicamento =
-                        objConexion?.prepareStatement("insert into tbPacientesMedicamentos (ID_Paciente, ID_Medicamento, hora_aplicacion) values (?, ?, ?)")!!
+                    val pacienteMedicamento = objConexion?.prepareStatement("insert into tbPacientesMedicamentos (ID_Paciente, ID_Medicamento, hora_aplicacion) values (?, ?, ?)")!!
                     pacienteMedicamento.setString(1, idPaciente)
-                    pacienteMedicamento.setInt(
-                        2,
-                        medicamento[spMedicamentos.selectedItemPosition].ID_Medicamento
-                    )
-                    pacienteMedicamento.setString(3, txtControlPaciente.text.toString())
+                    pacienteMedicamento.setInt(2, medicamento[spMedicamentos.selectedItemPosition].ID_Medicamento)
+                    pacienteMedicamento.setTimestamp(3, txtControlPaciente)
+
+                    pacienteMedicamento.executeUpdate()
                 }
 
                 withContext(Dispatchers.Main) {
+                    txtNombrePaciente.text.clear()
+                    txtApellidoPaciente.text.clear()
+                    txtEdad.text.clear()
+                    txtControlPaciente.text.clear()
+
                     Toast.makeText(
                         requireContext(),
                         "Paciente agregado correctamente.",
