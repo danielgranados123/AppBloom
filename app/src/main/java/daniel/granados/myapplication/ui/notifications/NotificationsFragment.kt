@@ -22,8 +22,13 @@ import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
 import modelo.DataClassPacientes
 import pacientesHelper.AdaptadorPacientes
+import java.util.UUID
 
 class NotificationsFragment : Fragment() {
+
+    companion object variablesUsuarios {
+        lateinit var idUsuario: String
+    }
 
     private var _binding: FragmentNotificationsBinding? = null
 
@@ -47,13 +52,15 @@ class NotificationsFragment : Fragment() {
             textView.text = it
         }
 
+        idUsuario = UUID.randomUUID().toString()
+
         val btnNuevo = root.findViewById<FloatingActionButton>(R.id.btnAgregarPaciente)
 
         btnNuevo.setOnClickListener{
             findNavController().navigate(R.id.action_navigation_notifications_to_fragment_agregar_paciente_prueba)
         }
 
-        val uuidUsuario = fragment_agregar_paciente_prueba.variablesUsuarios.idUsuario
+        val uuidUsuario = idUsuario
 
 
         ///////////////////MOSTRAR PACIENTES EN EL RECYCLERVIEW///////////////
@@ -67,7 +74,7 @@ class NotificationsFragment : Fragment() {
 
             val objConexion = ClaseConexion().cadenaConexion()
 
-            val statement = objConexion?.prepareStatement("Select p.apellidos_paciente, h.nombre_habitacion, pm.hora_aplicacion from tbPacientes p inner join tbHabitaciones h on p.ID_HabitacionCama = h.ID_Habitacion inner join tbPacientesMedicamentos pm on p.id_Paciente = pm.ID_Paciente where id_paciente = ?")
+            val statement = objConexion?.prepareStatement("Select p.apellidos_paciente, h.nombre_habitacion, pm.hora_aplicacion from tbPacientes p inner join tbHabitaciones h on p.ID_HabitacionCama = h.ID_Habitacion inner join tbPacientesMedicamentos pm on p.id_Paciente = pm.ID_Paciente where p.id_paciente = ?")
             statement?.setString(1, uuidUsuario)
 
             val resultset = statement?.executeQuery()!!

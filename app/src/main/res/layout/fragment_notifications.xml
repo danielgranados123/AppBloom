@@ -11,12 +11,13 @@
         android:id="@+id/imageView2"
         android:layout_width="418dp"
         android:layout_height="244dp"
-        android:layout_marginBottom="592dp"
+        android:layout_marginTop="-790dp"
         android:src="@drawable/borde_card"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.571"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
@@ -78,8 +79,8 @@
         android:id="@+id/imageView7"
         android:layout_width="145dp"
         android:layout_height="135dp"
-        android:layout_marginEnd="316dp"
-        android:layout_marginBottom="640dp"
+        android:layout_marginEnd="312dp"
+        android:layout_marginBottom="752dp"
         android:src="@drawable/ic_textura"
 
         app:layout_constraintBottom_toBottomOf="parent"
@@ -88,8 +89,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvPacientes"
-        android:layout_width="367dp"
-        android:layout_height="514dp"
+        android:layout_width="376dp"
+        android:layout_height="612dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

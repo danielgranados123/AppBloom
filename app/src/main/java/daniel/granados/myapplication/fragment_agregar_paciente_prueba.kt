@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TimePicker
 import android.widget.Toast
+import daniel.granados.myapplication.ui.notifications.NotificationsFragment.variablesUsuarios.idUsuario
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -43,9 +44,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class fragment_agregar_paciente_prueba : Fragment() {
 
-    companion object variablesUsuarios {
-        lateinit var idUsuario: String
-    }
+
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -68,6 +67,8 @@ class fragment_agregar_paciente_prueba : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_agregar_paciente_prueba, container, false)
+
+        val idUsuario = idUsuario
 
         //1-Mandar a llamar a los elementos
         val spEnfermedades = root.findViewById<Spinner>(R.id.txtEnfermedadPaciente)
@@ -368,9 +369,10 @@ class fragment_agregar_paciente_prueba : Fragment() {
             }
         }
 
+
         btnGuardarPaciente.setOnClickListener {
-            idUsuario = UUID.randomUUID().toString()
-            val idPaciente = idUsuario
+
+
 
             //Validaciones
 
@@ -404,7 +406,7 @@ class fragment_agregar_paciente_prueba : Fragment() {
                         objConexion?.prepareStatement("insert into tbPacientes (id_Paciente,nombres_paciente, apellidos_paciente, edad_paciente, ID_HabitacionCama) values (?, ?, ?, ?, ?)")!!
 
 
-                    agregarPaciente.setString(1, idPaciente)
+                    agregarPaciente.setString(1, idUsuario)
                     agregarPaciente.setString(2, txtNombrePaciente.text.toString())
                     agregarPaciente.setString(3, txtApellidoPaciente.text.toString())
                     agregarPaciente.setString(4, txtEdad.text.toString())
@@ -412,12 +414,12 @@ class fragment_agregar_paciente_prueba : Fragment() {
                     agregarPaciente.executeUpdate()
 
                     val pacienteEnfermedad = objConexion?.prepareStatement("insert into tbPacientesEnfermedades (ID_Paciente, ID_Enfermedad) values (?, ?)")!!
-                    pacienteEnfermedad.setString(1, idPaciente)
+                    pacienteEnfermedad.setString(1, idUsuario)
                     pacienteEnfermedad.setInt(2, enfermedad[spEnfermedades.selectedItemPosition].ID_Enfermedad)
                     pacienteEnfermedad.executeUpdate()
 
                     val pacienteMedicamento = objConexion?.prepareStatement("insert into tbPacientesMedicamentos (ID_Paciente, ID_Medicamento, hora_aplicacion) values (?, ?, ?)")!!
-                    pacienteMedicamento.setString(1, idPaciente)
+                    pacienteMedicamento.setString(1, idUsuario)
                     pacienteMedicamento.setInt(2, medicamento[spMedicamentos.selectedItemPosition].ID_Medicamento)
                     pacienteMedicamento.setString(3, txtControlPaciente.text.toString())
 

@@ -12,7 +12,7 @@
         android:id="@+id/imageView13"
         android:layout_width="411dp"
         android:layout_height="128dp"
-        android:layout_marginTop="-50dp"
+        android:layout_marginTop="-130dp"
         android:layout_marginBottom="640dp"
         android:src="@drawable/borde_card"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -38,13 +38,13 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <ScrollView
-        android:layout_width="409dp"
-        android:layout_height="625dp"
+        android:layout_width="410dp"
+        android:layout_height="749dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView13"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.07999998">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -52,8 +52,8 @@
 
             <ImageView
                 android:id="@+id/imageView14"
-                android:layout_width="414dp"
-                android:layout_height="50dp"
+                android:layout_width="409dp"
+                android:layout_height="74dp"
                 android:src="@drawable/bg_fondo_blanco"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -65,12 +65,13 @@
                 android:id="@+id/textView19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="Información Personal:"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.236"
+                app:layout_constraintHorizontal_bias="0.234"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
