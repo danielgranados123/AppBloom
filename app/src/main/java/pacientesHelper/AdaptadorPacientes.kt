@@ -118,20 +118,6 @@ class AdaptadorPacientes(private var Datos: List<DataClassPacientes>) : Recycler
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
             val intent = Intent(context, fragment_detalles::class.java)
-            intent.putExtra(
-                "nombrePaciente",
-                item.nombrePaciente
-            )
-            intent.putExtra(
-                "apellidoPaciente",
-                item.apellidoPaciente
-            )
-            intent.putExtra(
-                "edadPaciente",
-                item.edadPaciente
-            )
-
-
 
             context.startActivity(intent)
         }
