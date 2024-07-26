@@ -22,6 +22,8 @@ import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
 import modelo.DataClassPacientes
 import pacientesHelper.AdaptadorPacientes
+import java.text.SimpleDateFormat
+import java.util.Locale
 import java.util.UUID
 
 class NotificationsFragment : Fragment() {
@@ -66,6 +68,7 @@ class NotificationsFragment : Fragment() {
         ///////////////////MOSTRAR PACIENTES EN EL RECYCLERVIEW///////////////
         val rcvPacientes = root.findViewById<RecyclerView>(R.id.rcvPacientes)
 
+
         //Asignar layout al RecyclerView
         rcvPacientes.layoutManager = LinearLayoutManager(requireContext())
 
@@ -73,22 +76,24 @@ class NotificationsFragment : Fragment() {
         fun obtenerPacientes(): List<DataClassPacientes> {
 
             val objConexion = ClaseConexion().cadenaConexion()
+            val Statement = objConexion?.createStatement()
 
-            val statement = objConexion?.prepareStatement("Select p.apellidos_paciente, h.nombre_habitacion, pm.hora_aplicacion from tbPacientes p inner join tbHabitaciones h on p.ID_HabitacionCama = h.ID_Habitacion inner join tbPacientesMedicamentos pm on p.id_Paciente = pm.ID_Paciente where p.id_paciente = ?")
-            statement?.setString(1, uuidUsuario)
+            val resultset = Statement?.executeQuery("SELECT p.id_paciente, p.nombres_paciente, p.edad_paciente, p.apellidos_paciente, h.nombre_habitacion, pm.hora_aplicacion FROM tbPacientes p INNER JOIN tbHabitacionesCamas hc ON p.ID_HabitacionCama = hc.ID_HabitacionCama INNER JOIN tbHabitaciones h ON hc.ID_Habitacion = h.ID_Habitacion INNER JOIN tbPacientesMedicamentos pm ON p.id_Paciente = pm.ID_Paciente ORDER BY CASE WHEN pm.hora_aplicacion >= SYSTIMESTAMP THEN (EXTRACT(DAY FROM (pm.hora_aplicacion - SYSTIMESTAMP)) * 86400 + EXTRACT(HOUR FROM (pm.hora_aplicacion - SYSTIMESTAMP)) * 3600 + EXTRACT(MINUTE FROM (pm.hora_aplicacion - SYSTIMESTAMP)) * 60 + EXTRACT(SECOND FROM (pm.hora_aplicacion - SYSTIMESTAMP))) ELSE NULL END DESC, CASE WHEN pm.hora_aplicacion < SYSTIMESTAMP THEN (EXTRACT(DAY FROM (SYSTIMESTAMP - pm.hora_aplicacion)) * 86400 + EXTRACT(HOUR FROM (SYSTIMESTAMP - pm.hora_aplicacion)) * 3600 + EXTRACT(MINUTE FROM (SYSTIMESTAMP - pm.hora_aplicacion)) * 60 + EXTRACT(SECOND FROM (SYSTIMESTAMP - pm.hora_aplicacion))) ELSE NULL END DESC")!!
 
-            val resultset = statement?.executeQuery()!!
             val pacientes = mutableListOf<DataClassPacientes>()
 
+            val hourFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
             while (resultset.next()) {
                 val id_paciente = resultset.getString("id_paciente")
                 val nombre_paciente = resultset.getString("nombres_paciente")
                 val apellido_paciente = resultset.getString("apellidos_paciente")
                 val edad_paciente = resultset.getInt("edad_paciente")
-                val habitacionCama = resultset.getString("habitacionCama")
+                val habitacionCama = resultset.getString("nombre_habitacion")
                 val control = resultset.getTimestamp("hora_aplicacion")
 
-                val paciente = DataClassPacientes(id_paciente, nombre_paciente, apellido_paciente, edad_paciente, habitacionCama, control)
+                val horaFormateada = hourFormat.format(control)
+
+                val paciente = DataClassPacientes(id_paciente, nombre_paciente, apellido_paciente, edad_paciente, habitacionCama, horaFormateada)
                 pacientes.add(paciente)
             }
 

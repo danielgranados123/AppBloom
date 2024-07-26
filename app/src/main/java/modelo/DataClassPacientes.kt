@@ -8,5 +8,5 @@ data class DataClassPacientes(
     var apellidoPaciente: String,
     var edadPaciente: Int,
     var habitacionCama: String,
-    var control: Timestamp
+    var control: String
 )
