@@ -36,6 +36,14 @@ class AdaptadorPacientes(private var Datos: List<DataClassPacientes>) : Recycler
 
         CoroutineScope(Dispatchers.IO).launch {
             val objConexion = ClaseConexion().cadenaConexion()
+            val borrarPacienteMedicamento = objConexion?.prepareStatement("delete from tbPacientesMedicamentos where ID_Paciente = ?")!!
+            borrarPacienteMedicamento.setString(1, idPaciente)
+            borrarPacienteMedicamento.executeUpdate()
+
+            val borrarPacienteEnfermedad = objConexion?.prepareStatement("delete from tbPacientesEnfermedades where ID_Paciente = ?")!!
+            borrarPacienteEnfermedad.setString(1, idPaciente)
+            borrarPacienteEnfermedad.executeUpdate()
+
             val borrarPaciente = objConexion?.prepareStatement("delete from tbPacientes where ID_Paciente = ?")!!
             borrarPaciente.setString(1, idPaciente)
             borrarPaciente.executeUpdate()
@@ -89,7 +97,7 @@ class AdaptadorPacientes(private var Datos: List<DataClassPacientes>) : Recycler
                 builder.setTitle("¡Espera!")
 
                 //Ponemos el mensaje
-                builder.setMessage("¿Estás seguro de que deseas elimar el registro?")
+                builder.setMessage("¿Estás seguro de que deseas eliminar el registro?")
 
                 //Paso final, agregamos los botones
                 builder.setPositiveButton("Si"){
