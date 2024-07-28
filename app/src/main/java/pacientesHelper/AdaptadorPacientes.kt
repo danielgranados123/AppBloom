@@ -64,7 +64,7 @@ class AdaptadorPacientes(private var Datos: List<DataClassPacientes>) : Recycler
         val item = Datos[position]
         holder.lblApellidoPaciente.text = item.apellidoPaciente
         holder.lblHabitacion.text = item.habitacionCama
-        holder.lblHoraControl.text = item.control
+        holder.lblHoraControl.text = item.control + " HRS"
 
             holder.imgEliminar.setOnClickListener{
                 //Creamos una alerta

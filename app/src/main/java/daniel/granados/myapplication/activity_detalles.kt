@@ -1,5 +1,6 @@
 package daniel.granados.myapplication
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Window
 import android.widget.EditText
@@ -41,6 +42,7 @@ class activity_detalles : AppCompatActivity() {
         val lblEdadPacienteDetalle = findViewById<TextView>(R.id.txtEdadPacienteDetalle)
         val lblEnfermedadPacienteDetalle = findViewById<TextView>(R.id.txtEnfermedadPacienteDetalle)
 
+        val btnSalir = findViewById<ImageView>(R.id.imgExitDetallePacientes)
         val btnEditarNombre = findViewById<ImageView>(R.id.imgEditarNombreApellidoDetalle)
         val btnEditarEdad = findViewById<ImageView>(R.id.imgEditarEdadPaciente)
 
@@ -55,6 +57,10 @@ class activity_detalles : AppCompatActivity() {
 
         val idPaciente = intent.getStringExtra("id")?:""
 
+
+        btnSalir.setOnClickListener {
+            finish()
+        }
 
         //Editar nombre y apellido
         fun actualizarNombrePaciente(nombre: String, apellido: String, id: String){

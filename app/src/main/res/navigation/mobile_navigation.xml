@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_navigation_notifications_to_fragment_agregar_paciente_prueba"
             app:destination="@id/fragment_agregar_paciente_prueba" />
+        <action
+            android:id="@+id/action_navigation_notifications_to_activity_detalles"
+            app:destination="@id/activity_detalles" />
     </fragment>
     <fragment
         android:id="@+id/fragment_agregar_paciente"
@@ -49,4 +52,9 @@
             android:id="@+id/action_fragment_agregar_paciente_prueba_to_navigation_notifications"
             app:destination="@id/navigation_notifications" />
     </fragment>
+    <activity
+        android:id="@+id/activity_detalles"
+        android:name="daniel.granados.myapplication.activity_detalles"
+        android:label="activity_detalles"
+        tools:layout="@layout/activity_detalles" />
 </navigation>
