@@ -15,17 +15,22 @@ import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import daniel.granados.myapplication.ui.notifications.NotificationsFragment.variablesUsuarios.idUsuario
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import medicamentosHelper.AdaptadorMedicamentos
 import modelo.ClaseConexion
 import modelo.DataClassCamas
 import modelo.DataClassEnfermedades
 import modelo.DataClassHabitaciones
 import modelo.DataClassHabitacionesCamas
 import modelo.DataClassMedicamentos
+import modelo.DataClassPacientes
+import pacientesHelper.AdaptadorPacientes
 import java.sql.Timestamp
 import java.sql.Types
 import java.util.Calendar
@@ -64,6 +69,11 @@ class fragment_agregar_paciente_prueba : Fragment() {
     // Variables globales para almacenar datos de habitaciones y camas
     private lateinit var listaHabitaciones: List<DataClassHabitaciones>
     private lateinit var listaCamas: List<DataClassCamas>
+
+    //Para el recyclerView de medicamentos
+    private lateinit var rcvMedicina: RecyclerView
+    private lateinit var medicamentoAdapter: AdaptadorMedicamentos
+    private val medicamentosList = mutableListOf<DataClassMedicamentos>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -339,14 +349,16 @@ class fragment_agregar_paciente_prueba : Fragment() {
             //crepo un Statement que me ejecutara el Select
             val Statement = objConexion?.createStatement()
 
-            val resulset = Statement?.executeQuery("Select * from tbMedicamentos")!!
+            val resulset = Statement?.executeQuery("Select m.id_medicamento, m.nombre_medicamento, p.ID_Paciente, pm.hora_aplicacion from tbMedicamentos m inner join tbPacientesMedicamentos pm on m.ID_Medicamento = pm.ID_Medicamento inner join tbPacientes p on pm.ID_Paciente = p.ID_Paciente")!!
 
             val listadoMedicamentos = mutableListOf<DataClassMedicamentos>()
 
             while (resulset.next()) {
                 val id = resulset.getInt("id_medicamento")
                 val nombre = resulset.getString("nombre_medicamento")
-                val medicamento = DataClassMedicamentos(id, nombre)
+                val idPaciente = resulset.getString("ID_Paciente")
+                val control = resulset.getString("hora_aplicacion")
+                val medicamento = DataClassMedicamentos(id, nombre, idPaciente, control)
 
                 listadoMedicamentos.add(medicamento)
             }
@@ -372,11 +384,84 @@ class fragment_agregar_paciente_prueba : Fragment() {
             }
         }
 
+        val idTemporal = UUID.randomUUID().toString() //Id temporal para el paciente
+
+        //Guardar medicamentos para mostrarlos en el recyclerView
+        btnAgregarMedicamento.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                val objConexion = ClaseConexion().cadenaConexion()
+
+                //Medicamentos
+                val medicamento = obtenerMedicamentos()
+
+                val pacienteMedicamentoTemporal = objConexion?.prepareStatement("insert into tbMedicamentosTemporales (ID_PacienteTemporal, ID_Medicamento, hora_aplicacion) values (?, ?, ?)")!!
+                pacienteMedicamentoTemporal.setString(1, idTemporal)
+                pacienteMedicamentoTemporal.setInt(2,medicamento[spMedicamentos.selectedItemPosition].ID_Medicamento)
+                val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(txtControlPaciente.text.toString())
+                val stamp = Timestamp(date.time)
+                pacienteMedicamentoTemporal.setTimestamp(3, stamp)
+
+                pacienteMedicamentoTemporal.executeUpdate()
+            }
+        }
+
+        //Mostrar medicamentos agregados hasta el momento
+        rcvMedicina = root.findViewById(R.id.rcvMedicamentos)
+
+        fun obtenerNombreMedicamento(idMedicamento: Int): String {
+            val objConexion = ClaseConexion().cadenaConexion()
+            var nombre = ""
+
+            try {
+                val statement = objConexion?.prepareStatement("select nombre_medicamento from tbMedicamentos where id_medicamento = ?")
+                statement?.setInt(1, idMedicamento)
+                val resultSet = statement?.executeQuery()
+
+                if (resultSet?.next() == true) {
+                    nombre = resultSet.getString("nombre_medicamento")
+                }
+            } catch (e: SQLException) {
+                e.printStackTrace()
+            }
+
+            return nombre
+        }
+
+        //Función para obtener datos
+        fun obtenerMedicamentosPendientes(idTemporal: String): List<DataClassMedicamentos> {
+            val objConexion = ClaseConexion().cadenaConexion()
+            val medicamentos = mutableListOf<DataClassMedicamentos>()
+
+                val statement = objConexion?.prepareStatement("select ID_Medicamento, hora_aplicacion from tbMedicamentosTemporales where ID_PacienteTemporal = ?")
+                statement?.setString(1, idTemporal)
+
+                val resultSet = statement?.executeQuery()
+                val hourFormat = java.text.SimpleDateFormat("HH:mm", Locale.getDefault())
+
+                while (resultSet?.next() == true) {
+                    val idMedicamento = resultSet.getInt("ID_Medicamento")
+                    val horaAplicacion = resultSet.getTimestamp("hora_aplicacion")
+                    val horaFormateada = hourFormat.format(horaAplicacion)
+
+                    val nombre = obtenerNombreMedicamento(idMedicamento)
+
+                    val medicamento = DataClassMedicamentos(idMedicamento, nombre, idTemporal, horaFormateada)
+                    medicamentos.add(medicamento)
+                }
+
+            return medicamentos
+        }
+
+        //Asignar adaptador
+        CoroutineScope(Dispatchers.IO).launch {
+            val medicamento = obtenerMedicamentosPendientes(idTemporal)
+            withContext(Dispatchers.Main){
+                val miAdapter = AdaptadorMedicamentos(medicamento)
+                rcvMedicina.adapter = miAdapter
+            }
+        }
 
         btnGuardarPaciente.setOnClickListener {
-
-
-
             //Validaciones
 
 
@@ -421,6 +506,18 @@ class fragment_agregar_paciente_prueba : Fragment() {
                     pacienteEnfermedad.setInt(2, enfermedad[spEnfermedades.selectedItemPosition].ID_Enfermedad)
                     pacienteEnfermedad.executeUpdate()
 
+                    //Mover datos desde tbMedicamentosTemporales a tbPacientesMedicamentos
+                    val moverMedicamento = objConexion?.prepareStatement("insert into tbPacientesMedicamentos (ID_Paciente, ID_Medicamento, hora_aplicacion) select ?, ID_Medicamento, hora_aplicacion from tbMedicamentosTemporales where ID_PacienteTemporal = ?")
+                    moverMedicamento?.setString(1, idUsuario)
+                    moverMedicamento?.setString(2, idTemporal)
+                    moverMedicamento?.executeUpdate()
+
+                    // Eliminar registros de la tabla temporal
+                    val eliminarMedicamentoTablaTemporal = objConexion?.prepareStatement("delete from tbMedicamentosTemporales where ID_PacienteTemporal = ?")
+                    eliminarMedicamentoTablaTemporal?.setString(1, idTemporal)
+                    eliminarMedicamentoTablaTemporal?.executeUpdate()
+
+                    /*
                     val pacienteMedicamento = objConexion?.prepareStatement("insert into tbPacientesMedicamentos (ID_Paciente, ID_Medicamento, hora_aplicacion) values (?, ?, ?)")!!
                     pacienteMedicamento.setString(1, idUsuario)
                     pacienteMedicamento.setInt(2, medicamento[spMedicamentos.selectedItemPosition].ID_Medicamento)
@@ -428,10 +525,7 @@ class fragment_agregar_paciente_prueba : Fragment() {
                     val stamp = Timestamp(date.time)
                     pacienteMedicamento.setTimestamp(3,  stamp)
 
-                    println("esto eslo que mando ${txtControlPaciente.text.toString()}")
-
-
-                    pacienteMedicamento.executeUpdate()
+                    pacienteMedicamento.executeUpdate()*/
                 }
 
                 withContext(Dispatchers.Main) {

@@ -75,6 +75,6 @@ class AdaptadorMedicamentos(private var Datos: List<DataClassMedicamentos>) : Re
             val alertDialog = builder.create()
             alertDialog.show()
         }
-        
+
     }
 }
