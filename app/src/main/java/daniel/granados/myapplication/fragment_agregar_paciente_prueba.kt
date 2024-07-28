@@ -526,6 +526,8 @@ class fragment_agregar_paciente_prueba : Fragment() {
                     eliminarMedicamentoTablaTemporal?.setString(1, idTemporal)
                     eliminarMedicamentoTablaTemporal?.executeUpdate()
 
+
+
                     /*
                     val pacienteMedicamento = objConexion?.prepareStatement("insert into tbPacientesMedicamentos (ID_Paciente, ID_Medicamento, hora_aplicacion) values (?, ?, ?)")!!
                     pacienteMedicamento.setString(1, idUsuario)
@@ -542,6 +544,9 @@ class fragment_agregar_paciente_prueba : Fragment() {
                     txtApellidoPaciente.text.clear()
                     txtEdad.text.clear()
                     txtControlPaciente.text.clear()
+
+                    val nuevosMedicamentos = obtenerMedicamentosPendientes(idTemporal)
+                    (rcvMedicina.adapter as? AdaptadorMedicamentos)?.actualizarLista(nuevosMedicamentos)
 
                     Toast.makeText(
                         requireContext(),
