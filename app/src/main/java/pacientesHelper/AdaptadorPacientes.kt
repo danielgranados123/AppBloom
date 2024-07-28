@@ -60,24 +60,6 @@ class AdaptadorPacientes(private var Datos: List<DataClassPacientes>) : Recycler
     override fun getItemCount() = Datos.size
 
 
-    fun actualizarNombrePaciente(id: Int, nombre: String, apellido: String, edad: Int){
-        //1-Creo una corrutina
-        GlobalScope.launch(Dispatchers.IO){
-            //1- Crear objeto de la clase conexión
-            val objConexion = ClaseConexion().cadenaConexion()
-
-            //2- Variable que contenga un prepareStatement
-            val updateProducto = objConexion?.prepareStatement("update tbPacientes set nombre = ? where id_paciente = ?")!!
-            updateProducto.setInt(1, id)
-            updateProducto.setString(2, nombre)
-            updateProducto.executeUpdate()
-
-            val commit = objConexion.prepareStatement("commit")!!
-            commit.executeUpdate()
-
-        }
-    }
-
     override fun onBindViewHolder(holder: ViewHolderPacientes, position: Int) {
         val item = Datos[position]
         holder.lblApellidoPaciente.text = item.apellidoPaciente
@@ -119,6 +101,7 @@ class AdaptadorPacientes(private var Datos: List<DataClassPacientes>) : Recycler
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
             val pantallaDetalles = Intent(context, activity_detalles::class.java)
+            pantallaDetalles.putExtra("id", item.ID_Paciente)
             pantallaDetalles.putExtra("nombre", item.nombrePaciente)
             pantallaDetalles.putExtra("apellido", item.apellidoPaciente)
             pantallaDetalles.putExtra("edad", item.edadPaciente)
