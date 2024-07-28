@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -187,7 +188,8 @@ class activity_detalles : AppCompatActivity() {
             alertDialog.show()
         }
 
-
+        //Medicamentos RecyclerView
+        val rcvMedicina = findViewById<RecyclerView>(R.id.rcvMedicamentos)
 
 
     }

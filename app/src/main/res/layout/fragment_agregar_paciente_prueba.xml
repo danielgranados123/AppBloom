@@ -353,16 +353,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rcvMedicamentos" />
 
-            <ImageView
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btnAgregarMedicamento"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:layout_marginTop="40dp"
-                android:src="@drawable/ic_agregar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="36dp"
+                android:backgroundTint="@color/purple_500"
+                android:clickable="true"
+                android:src="@drawable/ic_agregar_blanco"
+                app:borderWidth="0dp"
+                app:fabSize="mini"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.31"
+                app:layout_constraintHorizontal_bias="0.174"
                 app:layout_constraintStart_toEndOf="@+id/txtControlPaciente"
                 app:layout_constraintTop_toBottomOf="@+id/txtEnfermedadPaciente" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

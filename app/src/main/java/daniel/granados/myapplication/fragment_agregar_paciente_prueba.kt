@@ -525,18 +525,6 @@ class fragment_agregar_paciente_prueba : Fragment() {
                     val eliminarMedicamentoTablaTemporal = objConexion?.prepareStatement("delete from tbMedicamentosTemporales where ID_PacienteTemporal = ?")
                     eliminarMedicamentoTablaTemporal?.setString(1, idTemporal)
                     eliminarMedicamentoTablaTemporal?.executeUpdate()
-
-
-
-                    /*
-                    val pacienteMedicamento = objConexion?.prepareStatement("insert into tbPacientesMedicamentos (ID_Paciente, ID_Medicamento, hora_aplicacion) values (?, ?, ?)")!!
-                    pacienteMedicamento.setString(1, idUsuario)
-                    pacienteMedicamento.setInt(2, medicamento[spMedicamentos.selectedItemPosition].ID_Medicamento)
-                    val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss" ).parse(txtControlPaciente.text.toString())
-                    val stamp = Timestamp(date.time)
-                    pacienteMedicamento.setTimestamp(3,  stamp)
-
-                    pacienteMedicamento.executeUpdate()*/
                 }
 
                 withContext(Dispatchers.Main) {
