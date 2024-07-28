@@ -3,6 +3,7 @@ package daniel.granados.myapplication
 import android.app.TimePickerDialog
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -71,9 +72,6 @@ class fragment_agregar_paciente_prueba : Fragment() {
     private lateinit var listaCamas: List<DataClassCamas>
 
     //Para el recyclerView de medicamentos
-    private lateinit var rcvMedicina: RecyclerView
-    private lateinit var medicamentoAdapter: AdaptadorMedicamentos
-    private val medicamentosList = mutableListOf<DataClassMedicamentos>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -384,29 +382,11 @@ class fragment_agregar_paciente_prueba : Fragment() {
             }
         }
 
-        val idTemporal = UUID.randomUUID().toString() //Id temporal para el paciente
-
-        //Guardar medicamentos para mostrarlos en el recyclerView
-        btnAgregarMedicamento.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch {
-                val objConexion = ClaseConexion().cadenaConexion()
-
-                //Medicamentos
-                val medicamento = obtenerMedicamentos()
-
-                val pacienteMedicamentoTemporal = objConexion?.prepareStatement("insert into tbMedicamentosTemporales (ID_PacienteTemporal, ID_Medicamento, hora_aplicacion) values (?, ?, ?)")!!
-                pacienteMedicamentoTemporal.setString(1, idTemporal)
-                pacienteMedicamentoTemporal.setInt(2,medicamento[spMedicamentos.selectedItemPosition].ID_Medicamento)
-                val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(txtControlPaciente.text.toString())
-                val stamp = Timestamp(date.time)
-                pacienteMedicamentoTemporal.setTimestamp(3, stamp)
-
-                pacienteMedicamentoTemporal.executeUpdate()
-            }
-        }
 
         //Mostrar medicamentos agregados hasta el momento
-        rcvMedicina = root.findViewById(R.id.rcvMedicamentos)
+        val rcvMedicina = root.findViewById<RecyclerView>(R.id.rcvMedicamentos)
+        val idTemporal = UUID.randomUUID().toString() //Id temporal para el paciente
+
 
         fun obtenerNombreMedicamento(idMedicamento: Int): String {
             val objConexion = ClaseConexion().cadenaConexion()
@@ -454,10 +434,39 @@ class fragment_agregar_paciente_prueba : Fragment() {
 
         //Asignar adaptador
         CoroutineScope(Dispatchers.IO).launch {
+            rcvMedicina.layoutManager = LinearLayoutManager(requireContext())
+
             val medicamento = obtenerMedicamentosPendientes(idTemporal)
+            Log.d("Medicamentos", "Medicamentos obtenidos: $medicamento")
+
             withContext(Dispatchers.Main){
                 val miAdapter = AdaptadorMedicamentos(medicamento)
                 rcvMedicina.adapter = miAdapter
+            }
+        }
+
+        //Guardar medicamentos para mostrarlos en el recyclerView
+        btnAgregarMedicamento.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                val objConexion = ClaseConexion().cadenaConexion()
+
+                //Medicamentos
+                val medicamento = obtenerMedicamentos()
+
+                val pacienteMedicamentoTemporal = objConexion?.prepareStatement("insert into tbMedicamentosTemporales (ID_PacienteTemporal, ID_Medicamento, hora_aplicacion) values (?, ?, ?)")!!
+                pacienteMedicamentoTemporal.setString(1, idTemporal)
+                pacienteMedicamentoTemporal.setInt(2,medicamento[spMedicamentos.selectedItemPosition].ID_Medicamento)
+                val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(txtControlPaciente.text.toString())
+                val stamp = Timestamp(date.time)
+                pacienteMedicamentoTemporal.setTimestamp(3, stamp)
+
+                pacienteMedicamentoTemporal.executeUpdate()
+
+                val nuevosMedicamentos = obtenerMedicamentosPendientes(idTemporal)
+                withContext(Dispatchers.Main){
+                    (rcvMedicina.adapter as? AdaptadorMedicamentos)?.actualizarLista(nuevosMedicamentos)
+                }
+
             }
         }
 

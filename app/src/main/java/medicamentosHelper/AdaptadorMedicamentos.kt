@@ -20,6 +20,12 @@ class AdaptadorMedicamentos(private var Datos: List<DataClassMedicamentos>) : Re
         return ViewHolderMedicamentos(vista)
     }
 
+    fun actualizarLista(nuevaLista: List<DataClassMedicamentos>){
+
+        Datos = nuevaLista
+        notifyDataSetChanged()
+
+    }
 
     fun eliminarMedicina(idMedicamento: Int, position: Int) {
         val listaDatos = Datos .toMutableList()
@@ -27,7 +33,7 @@ class AdaptadorMedicamentos(private var Datos: List<DataClassMedicamentos>) : Re
 
         CoroutineScope(Dispatchers.IO).launch {
             val objConexion = ClaseConexion().cadenaConexion()
-            val borrarPacienteMedicamento = objConexion?.prepareStatement("delete from tbPacientesMedicamentos where ID_Medicamento = ?")!!
+            val borrarPacienteMedicamento = objConexion?.prepareStatement("delete from tbMedicamentosTemporales where ID_Medicamento = ?")!!
             borrarPacienteMedicamento.setInt(1, idMedicamento)
             borrarPacienteMedicamento.executeUpdate()
 
