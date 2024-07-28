@@ -78,7 +78,7 @@ class NotificationsFragment : Fragment() {
             val objConexion = ClaseConexion().cadenaConexion()
             val Statement = objConexion?.createStatement()
 
-            val resultset = Statement?.executeQuery("SELECT p.id_paciente, p.nombres_paciente, p.edad_paciente, p.apellidos_paciente, h.nombre_habitacion, pm.hora_aplicacion FROM tbPacientes p INNER JOIN tbHabitacionesCamas hc ON p.ID_HabitacionCama = hc.ID_HabitacionCama INNER JOIN tbHabitaciones h ON hc.ID_Habitacion = h.ID_Habitacion INNER JOIN tbPacientesMedicamentos pm ON p.id_Paciente = pm.ID_Paciente ORDER BY CASE WHEN pm.hora_aplicacion >= SYSTIMESTAMP THEN (EXTRACT(DAY FROM (pm.hora_aplicacion - SYSTIMESTAMP)) * 86400 + EXTRACT(HOUR FROM (pm.hora_aplicacion - SYSTIMESTAMP)) * 3600 + EXTRACT(MINUTE FROM (pm.hora_aplicacion - SYSTIMESTAMP)) * 60 + EXTRACT(SECOND FROM (pm.hora_aplicacion - SYSTIMESTAMP))) ELSE NULL END DESC, CASE WHEN pm.hora_aplicacion < SYSTIMESTAMP THEN (EXTRACT(DAY FROM (SYSTIMESTAMP - pm.hora_aplicacion)) * 86400 + EXTRACT(HOUR FROM (SYSTIMESTAMP - pm.hora_aplicacion)) * 3600 + EXTRACT(MINUTE FROM (SYSTIMESTAMP - pm.hora_aplicacion)) * 60 + EXTRACT(SECOND FROM (SYSTIMESTAMP - pm.hora_aplicacion))) ELSE NULL END DESC")!!
+            val resultset = Statement?.executeQuery("SELECT p.id_paciente, p.nombres_paciente, e.nombre_enfermedad, p.edad_paciente, p.apellidos_paciente, h.nombre_habitacion, pm.hora_aplicacion FROM tbPacientes p INNER JOIN tbHabitacionesCamas hc ON p.ID_HabitacionCama = hc.ID_HabitacionCama INNER JOIN tbHabitaciones h ON hc.ID_Habitacion = h.ID_Habitacion INNER JOIN tbPacientesMedicamentos pm ON p.id_Paciente = pm.ID_Paciente inner join tbPacientesEnfermedades pe on p.ID_Paciente = pe.ID_Paciente inner join tbEnfermedades e ON pe.ID_Enfermedad = e.ID_Enfermedad ORDER BY CASE WHEN pm.hora_aplicacion >= SYSTIMESTAMP THEN (EXTRACT(DAY FROM (pm.hora_aplicacion - SYSTIMESTAMP)) * 86400 + EXTRACT(HOUR FROM (pm.hora_aplicacion - SYSTIMESTAMP)) * 3600 + EXTRACT(MINUTE FROM (pm.hora_aplicacion - SYSTIMESTAMP)) * 60 + EXTRACT(SECOND FROM (pm.hora_aplicacion - SYSTIMESTAMP))) ELSE NULL END DESC, CASE WHEN pm.hora_aplicacion < SYSTIMESTAMP THEN (EXTRACT(DAY FROM (SYSTIMESTAMP - pm.hora_aplicacion)) * 86400 + EXTRACT(HOUR FROM (SYSTIMESTAMP - pm.hora_aplicacion)) * 3600 + EXTRACT(MINUTE FROM (SYSTIMESTAMP - pm.hora_aplicacion)) * 60 + EXTRACT(SECOND FROM (SYSTIMESTAMP - pm.hora_aplicacion))) ELSE NULL END DESC")!!
 
             val pacientes = mutableListOf<DataClassPacientes>()
 
@@ -90,10 +90,11 @@ class NotificationsFragment : Fragment() {
                 val edad_paciente = resultset.getInt("edad_paciente")
                 val habitacionCama = resultset.getString("nombre_habitacion")
                 val control = resultset.getTimestamp("hora_aplicacion")
+                val enfermedad = resultset.getString("nombre_enfermedad")
 
                 val horaFormateada = hourFormat.format(control)
 
-                val paciente = DataClassPacientes(id_paciente, nombre_paciente, apellido_paciente, edad_paciente, habitacionCama, horaFormateada)
+                val paciente = DataClassPacientes(id_paciente, nombre_paciente, apellido_paciente, edad_paciente, habitacionCama, horaFormateada, enfermedad)
                 pacientes.add(paciente)
             }
 

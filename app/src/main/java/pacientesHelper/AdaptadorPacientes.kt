@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import daniel.granados.myapplication.R
+import daniel.granados.myapplication.activity_detalles
 import daniel.granados.myapplication.fragment_detalles
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -117,9 +118,14 @@ class AdaptadorPacientes(private var Datos: List<DataClassPacientes>) : Recycler
         //Asigno los valores a los textView de la card
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
-            val intent = Intent(context, fragment_detalles::class.java)
-
-            context.startActivity(intent)
+            val pantallaDetalles = Intent(context, activity_detalles::class.java)
+            pantallaDetalles.putExtra("nombre", item.nombrePaciente)
+            pantallaDetalles.putExtra("apellido", item.apellidoPaciente)
+            pantallaDetalles.putExtra("edad", item.edadPaciente)
+            pantallaDetalles.putExtra("enfermedad", item.enfermedad)
+            pantallaDetalles.putExtra("control", item.control)
+            pantallaDetalles.putExtra("habitacion", item.habitacionCama)
+            context.startActivity(pantallaDetalles)
         }
     }
 }

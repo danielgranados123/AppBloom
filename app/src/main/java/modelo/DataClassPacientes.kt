@@ -8,5 +8,6 @@ data class DataClassPacientes(
     var apellidoPaciente: String,
     var edadPaciente: Int,
     var habitacionCama: String,
-    var control: String
+    var control: String,
+    var enfermedad: String
 )
