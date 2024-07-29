@@ -437,7 +437,6 @@ class fragment_agregar_paciente_prueba : Fragment() {
             rcvMedicina.layoutManager = LinearLayoutManager(requireContext())
 
             val medicamento = obtenerMedicamentosPendientes(idTemporal)
-            Log.d("Medicamentos", "Medicamentos obtenidos: $medicamento")
 
             withContext(Dispatchers.Main){
                 val miAdapter = AdaptadorMedicamentos(medicamento)

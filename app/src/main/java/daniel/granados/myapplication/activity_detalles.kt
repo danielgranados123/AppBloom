@@ -2,6 +2,7 @@ package daniel.granados.myapplication
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Window
 import android.widget.EditText
 import android.widget.ImageView
@@ -13,13 +14,18 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import medicamentosHelper.AdaptadorMedicamentos
 import modelo.ClaseConexion
+import modelo.DataClassMedicamentos
 import modelo.DataClassPacientes
+import java.util.Locale
 
 class activity_detalles : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -191,6 +197,43 @@ class activity_detalles : AppCompatActivity() {
         //Medicamentos RecyclerView
         val rcvMedicina = findViewById<RecyclerView>(R.id.rcvMedicamentos)
 
+        fun obtenerMedicamentos(): List<DataClassMedicamentos> {
+            //Crear un objeto de la clase conexion
+            val objConexion = ClaseConexion().cadenaConexion()
+
+            //crepo un Statement que me ejecutara el Select
+            val statement = objConexion?.prepareStatement("Select m.id_medicamento, m.nombre_medicamento, pm.hora_aplicacion from tbMedicamentos m inner join tbPacientesMedicamentos pm on m.ID_Medicamento = pm.ID_Medicamento where pm.ID_Paciente = ?")
+            statement?.setString(1, idPaciente)
+
+            val resultSet = statement?.executeQuery()
+            val hourFormat = java.text.SimpleDateFormat("HH:mm", Locale.getDefault())
+
+            val listadoMedicamentos = mutableListOf<DataClassMedicamentos>()
+            while (resultSet?.next() == true) {
+                val idMedicamento = resultSet.getInt("ID_Medicamento")
+                val nombre = resultSet.getString("nombre_medicamento")
+                val horaAplicacion = resultSet.getTimestamp("hora_aplicacion")
+                val horaFormateada = hourFormat.format(horaAplicacion)
+
+
+                val medicamento = DataClassMedicamentos(idMedicamento, nombre, idPaciente, horaFormateada)
+                listadoMedicamentos.add(medicamento)
+            }
+
+            return listadoMedicamentos
+        }
+
+        //Asignar adaptador
+        CoroutineScope(Dispatchers.IO).launch {
+            rcvMedicina.layoutManager = LinearLayoutManager(this@activity_detalles)
+
+            val medicamento = obtenerMedicamentos()
+
+            withContext(Dispatchers.Main){
+                val miAdapter = AdaptadorMedicamentos(medicamento)
+                rcvMedicina.adapter = miAdapter
+            }
+        }
 
     }
 }
