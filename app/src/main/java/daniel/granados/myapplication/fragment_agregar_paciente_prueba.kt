@@ -93,13 +93,18 @@ class fragment_agregar_paciente_prueba : Fragment() {
         val txtControlPaciente = root.findViewById<EditText>(R.id.txtControlPaciente)
         val btnAgregarMedicamento = root.findViewById<ImageView>(R.id.btnAgregarMedicamento)
 
+        val btnExit = root.findViewById<ImageView>(R.id.btnExit)
 
-        // Función para obtener las habitaciones
+        btnExit.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
+        //Función para obtener las habitaciones
         fun obtenerHabitaciones(): List<DataClassHabitaciones> {
             // Crear un objeto de la clase conexion
             val objConexion = ClaseConexion().cadenaConexion()
 
-            // Crear un Statement que ejecutará el Select
+            //Crear un Statement que ejecutará el Select
             val statement = objConexion?.createStatement()
 
             val resulset = statement?.executeQuery("Select * from tbHabitaciones")!!
@@ -117,14 +122,13 @@ class fragment_agregar_paciente_prueba : Fragment() {
             return listaHabitaciones
         }
 
-        // Función para obtener las camas de una habitación específica
+        //Función para obtener las camas de una habitación específica
         fun obtenerCamas(idHabitacion: Int): List<DataClassCamas> {
             // Crear un objeto de la clase conexion
             val objConexion = ClaseConexion().cadenaConexion()
 
-            // Preparar la consulta SQL para obtener las camas de la habitación seleccionada
-            val selectCamas =
-                objConexion?.prepareStatement("SELECT c.id_cama, c.nombre_cama FROM tbHabitacionesCamas hc INNER JOIN tbCamas c ON hc.id_Cama = c.ID_Cama WHERE ID_Habitacion = ?")!!
+            //Preparar la consulta SQL para obtener las camas de la habitación seleccionada
+            val selectCamas = objConexion?.prepareStatement("SELECT c.id_cama, c.nombre_cama FROM tbHabitacionesCamas hc INNER JOIN tbCamas c ON hc.id_Cama = c.ID_Cama WHERE ID_Habitacion = ?")!!
 
             selectCamas.setInt(1, idHabitacion)
             val resultSet = selectCamas.executeQuery()
@@ -142,7 +146,7 @@ class fragment_agregar_paciente_prueba : Fragment() {
             return listaCamas
         }
 
-        // Función para obtener la relación entre habitaciones y camas
+        //Función para obtener la relación entre habitaciones y camas
         fun obtenerHabitacionesCamas(): List<DataClassHabitacionesCamas> {
             val objConexion = ClaseConexion().cadenaConexion()
             val statement = objConexion?.createStatement()
@@ -164,11 +168,11 @@ class fragment_agregar_paciente_prueba : Fragment() {
 
         //En el método donde inicializas los spinners y sus listeners
         CoroutineScope(Dispatchers.IO).launch {
-            // Obtener los datos de las habitaciones
+            //Obtener los datos de las habitaciones
             listaHabitaciones = obtenerHabitaciones()
 
             withContext(Dispatchers.Main) {
-                // Adaptador para el spinner de habitaciones
+                //Adaptador para el spinner de habitaciones
                 val adaptadorHabitaciones = ArrayAdapter(
                     requireContext(),
                     android.R.layout.simple_spinner_dropdown_item,
@@ -187,15 +191,15 @@ class fragment_agregar_paciente_prueba : Fragment() {
                 id: Long
             ) {
                 if (position != AdapterView.INVALID_POSITION) {
-                    // Obtener el ID de la habitación seleccionada
+                    //Obtener el ID de la habitación seleccionada
                     val idHabitacionSeleccionada = listaHabitaciones[position].ID_Habitacion
 
-                    // Llamar a la función para obtener las camas correspondientes
+                    //Llamar a la función para obtener las camas correspondientes
                     CoroutineScope(Dispatchers.IO).launch {
                         listaCamas = obtenerCamas(idHabitacionSeleccionada)
 
                         withContext(Dispatchers.Main) {
-                            // Adaptador para el spinner de camas
+                            //Adaptador para el spinner de camas
                             val adaptadorCamas = ArrayAdapter(
                                 requireContext(),
                                 android.R.layout.simple_spinner_dropdown_item,
@@ -203,21 +207,21 @@ class fragment_agregar_paciente_prueba : Fragment() {
                             )
                             spCamas.adapter = adaptadorCamas
 
-                            // Habilitar el spinner de camas solo si hay camas disponibles
+                            //Habilitar el spinner de camas solo si hay camas disponibles
                             spCamas.isEnabled = listaCamas.isNotEmpty()
                         }
                     }
                 } else {
-                    // Si no se ha seleccionado nada en el spinner de habitaciones
+                    //Si no se ha seleccionado nada en el spinner de habitaciones
                     spCamas.isEnabled = false
-                    spCamas.adapter = null  // Limpiar adaptador del spinner de camas
+                    spCamas.adapter = null
                 }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Si no se ha seleccionado nada en el spinner de habitaciones
+                //Si no se ha seleccionado nada en el spinner de habitaciones
                 spCamas.isEnabled = false
-                spCamas.adapter = null  // Limpiar adaptador del spinner de camas
+                spCamas.adapter = null
             }
         }
 
