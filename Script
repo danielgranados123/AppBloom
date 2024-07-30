@@ -1,6 +1,13 @@
 //Script de la base de datos
 //Lleva datos de ejemplo para que pueda visualizar todas las herramientas de la aplicación, y que la pueda ver funcionando de una forma más realista.
 
+----Tabla para los medicamentos antes de ingresar al paciente------
+create table tbMedicamentosTemporales(
+    ID_PacienteTemporal varchar2(50),
+    ID_Medicamento number,
+    hora_aplicacion timeStamp
+);
+
 ----Tabla para guardar las habitaciones---- 
 //Lo guardo como tipo de dato string/varchar, ya que en algunos lugares las habitaciones se identifican con claves alfanumericas (Habitación 1A, 2B, etc)
 create table tbHabitaciones( 
