@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+
+    <Spinner
+        android:id="@+id/spEnfermedadesAlert"
+        android:layout_width="260dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_form"
+        android:backgroundTintMode="add"
+        android:clickable="false"
+        android:drawableRight="@drawable/ic_down_spinner"
+        android:ems="10"
+        android:foreground="@drawable/ic_down_spinner"
+        android:foregroundGravity="center|right"
+        android:foregroundTint="@color/black"
+        android:hint="Habitación"
+        android:inputType="text"
+        android:paddingLeft="16dp"
+        android:theme="@style/SpinnerFuente" />
+
+
+</LinearLayout>

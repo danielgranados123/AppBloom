@@ -4,9 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Window
+import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -23,8 +25,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import medicamentosHelper.AdaptadorMedicamentos
 import modelo.ClaseConexion
+import modelo.DataClassEnfermedades
 import modelo.DataClassMedicamentos
 import modelo.DataClassPacientes
+import java.sql.Connection
+import java.sql.ResultSet
+import java.sql.SQLException
+import java.sql.Statement
 import java.util.Locale
 
 class activity_detalles : AppCompatActivity() {
@@ -233,6 +240,139 @@ class activity_detalles : AppCompatActivity() {
                 val miAdapter = AdaptadorMedicamentos(medicamento)
                 rcvMedicina.adapter = miAdapter
             }
+        }
+
+        //Sp de enfermedades
+        fun obtenerEnfermedades(): List<DataClassEnfermedades> {
+            //Crear un objeto de la clase conexion
+            val objConexion = ClaseConexion().cadenaConexion()
+
+            //crepo un Statement que me ejecutara el Select
+            val Statement = objConexion?.createStatement()
+
+
+            val resulset = Statement?.executeQuery("Select * from tbEnfermedades")!!
+
+            val listadoEnfermedades = mutableListOf<DataClassEnfermedades>()
+
+            while (resulset.next()) {
+                val id = resulset.getInt("id_enfermedad")
+                val nombre = resulset.getString("nombre_enfermedad")
+                val enfermedad = DataClassEnfermedades(id, nombre)
+
+                listadoEnfermedades.add(enfermedad)
+            }
+
+            return listadoEnfermedades
+        }
+
+        fun actualizarEnfermedad(ID_Enfermedad: Int) {
+            //1-Creo una corrutina
+            GlobalScope.launch(Dispatchers.IO) {
+                var objConexion: Connection? = null
+                try {
+                    //1- Crear objeto de la clase conexión
+                    objConexion = ClaseConexion().cadenaConexion()
+
+                    //2- Variable que contenga un prepareStatement
+                    val updateProducto = objConexion?.prepareStatement("update tbPacientesEnfermedades set ID_Enfermedad = ? where id_paciente = ?")!!
+                    updateProducto.setInt(1, ID_Enfermedad)
+                    updateProducto.setString(2, idPaciente)
+                    updateProducto.executeUpdate()
+
+                    val commit = objConexion.prepareStatement("commit")!!
+                    commit.executeUpdate()
+
+                    withContext(Dispatchers.Main) {
+                        lblEnfermedadPacienteDetalle.text = obtenerEnfermedades().find { it.ID_Enfermedad == ID_Enfermedad }?.nombre_enfermedad
+                        Toast.makeText(this@activity_detalles, "Enfermedad actualizada con éxito.", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@activity_detalles, "Error al actualizar la enfermedad.", Toast.LENGTH_SHORT).show()
+                    }
+                } finally {
+                    objConexion?.close()
+                }
+            }
+        }
+
+        fun obtenerIdEnfermedadPorNombre(nombreEnfermedad: String?): Int? {
+            if (nombreEnfermedad.isNullOrBlank()) return null
+
+            var objConexion: Connection? = null
+            var statement: Statement? = null
+            var resultSet: ResultSet? = null
+
+            try {
+                objConexion = ClaseConexion().cadenaConexion()
+                statement = objConexion?.createStatement()
+                resultSet = statement?.executeQuery("select id_enfermedad from tbEnfermedades where nombre_enfermedad = '$nombreEnfermedad'")
+
+                if (resultSet?.next() == true) {
+                    return resultSet.getInt("id_enfermedad")
+                }
+            } catch (e: SQLException) {
+                e.printStackTrace()
+            } finally {
+                resultSet?.close()
+                statement?.close()
+                objConexion?.close()
+            }
+
+            return null
+        }
+
+        fun mostrarDialogoConSpinner() {
+            val builder = AlertDialog.Builder(this@activity_detalles)
+            val dialogView = layoutInflater.inflate(R.layout.alert_dialog_enfermedades, null)
+            val spinner: Spinner = dialogView.findViewById(R.id.spEnfermedadesAlert)
+
+            builder.setTitle("Editar la enfermedad")
+                .setView(dialogView)
+                .setPositiveButton("Aceptar") { dialog, _ ->
+                    val selectedEnfermedad = spinner.selectedItem as? String
+                    val idEnfermedad = obtenerIdEnfermedadPorNombre(selectedEnfermedad)
+
+                    if (idEnfermedad != null) {
+                        actualizarEnfermedad(idEnfermedad)
+                    } else {
+                        Toast.makeText(this@activity_detalles, "No se ha seleccionado una enfermedad válida.", Toast.LENGTH_SHORT).show()
+                    }
+
+                    dialog.dismiss()
+                }
+                .setNegativeButton("Cancelar") { dialog, _ ->
+                    dialog.dismiss()
+                }
+
+            val alertDialog = builder.create()
+
+            //Cargar enfermedades en el spinner
+            CoroutineScope(Dispatchers.IO).launch {
+                val listadoDeEnfermedades = obtenerEnfermedades()
+                val nombreEnfermedad = listadoDeEnfermedades.map { it.nombre_enfermedad }
+
+                withContext(Dispatchers.Main) {
+                    val miAdaptador = ArrayAdapter(
+                        this@activity_detalles,
+                        android.R.layout.simple_spinner_dropdown_item,
+                        nombreEnfermedad
+                    )
+
+                    spinner.adapter = miAdaptador
+                    spinner.isEnabled = true
+                }
+            }
+
+            alertDialog.show()
+        }
+
+
+        val imgEditarEnfermedadPaciente = findViewById<ImageView>(R.id.imgEditarEnfermedadPaciente)
+        imgEditarEnfermedadPaciente.setOnClickListener {
+            mostrarDialogoConSpinner()
         }
 
     }
