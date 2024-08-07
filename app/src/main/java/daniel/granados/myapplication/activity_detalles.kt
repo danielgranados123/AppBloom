@@ -23,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import medicamentosHelper.AdaptadorDetalles
 import medicamentosHelper.AdaptadorMedicamentos
 import modelo.ClaseConexion
 import modelo.DataClassEnfermedades
@@ -237,7 +238,7 @@ class activity_detalles : AppCompatActivity() {
             val medicamento = obtenerMedicamentos()
 
             withContext(Dispatchers.Main){
-                val miAdapter = AdaptadorMedicamentos(medicamento)
+                val miAdapter = AdaptadorDetalles(medicamento)
                 rcvMedicina.adapter = miAdapter
             }
         }

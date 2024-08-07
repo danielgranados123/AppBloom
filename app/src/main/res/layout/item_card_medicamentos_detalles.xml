@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+
+
+
+    app:cardUseCompatPadding="true"
+
+    android:backgroundTint="@color/white"
+
+    android:layout_width="298dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtMedicina"
+            android:layout_width="165dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Acetaminofen"
+            android:textColor="#747474" />
+
+        <ImageView
+            android:id="@+id/imageView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:layout_marginEnd="8dp"
+            app:srcCompat="@drawable/ic_hora" />
+
+        <TextView
+            android:id="@+id/txtHora"
+            android:layout_width="62dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="22:30"
+            android:textColor="#747474" />
+
+
+        <ImageView
+            android:id="@+id/btnEliminar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="0"
+            app:srcCompat="@drawable/ic_borrar" />
+
+    </LinearLayout>
+
+
+
+</androidx.cardview.widget.CardView>
