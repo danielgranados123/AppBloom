@@ -17,6 +17,7 @@ import daniel.granados.myapplication.databinding.FragmentHomeBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import modelo.ClaseConexion
 import modelo.DataClassHabitaciones
@@ -24,6 +25,9 @@ import java.sql.Connection
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class HomeFragment : Fragment() {
 
@@ -33,6 +37,11 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private lateinit var txtFecha: TextView
+    private lateinit var txtHora: TextView
+
+    private val horaFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+    private val fechaFormat = SimpleDateFormat("EEEE d 'de' MMMM 'de' yyyy", Locale("es", "ES"))
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,12 +62,18 @@ class HomeFragment : Fragment() {
 
         val btnVerPacientes = root.findViewById<CardView>(R.id.btnVerPacientes)
         val txtNumeroPacientes = root.findViewById<TextView>(R.id.txtNumeroPacientes)
+        txtHora = root.findViewById<TextView>(R.id.txtHora)
+        txtFecha = root.findViewById<TextView>(R.id.txtFecha)
 
+        //Hora y fecha
+        mostrarFechaYHora()
+        actualizarHora()
 
-        btnVerPacientes.setOnClickListener {
+        /*btnVerPacientes.setOnClickListener {
 
-        }
+        }*/
 
+        //Cuenta de los pacientes
         Thread {
             var count = 0
             var connection: Connection? = null
@@ -84,7 +99,7 @@ class HomeFragment : Fragment() {
                 connection?.close()
             }
 
-            // Actualizar el UI en el hilo principal
+
             requireActivity().runOnUiThread {
                 txtNumeroPacientes.text = count.toString()
             }
@@ -93,7 +108,28 @@ class HomeFragment : Fragment() {
         return root
     }
 
+    private fun mostrarFechaYHora() {
+        val horaActual = horaFormat.format(Date())
 
+        txtFecha.text = mayusculaDia(fechaFormat.format(Date()))
+        txtHora.text = horaActual
+    }
+
+    private fun mayusculaDia(fecha: String): String {
+        return fecha.replaceFirstChar { it.uppercase(Locale("es", "ES")) }
+    }
+
+    private fun actualizarHora() {
+        CoroutineScope(Dispatchers.Main).launch {
+            while (isActive) {
+                // Actualizar la hora actual
+                txtHora.text = horaFormat.format(Date())
+
+                // Esperar 1 segundo antes de la siguiente actualización
+                delay(1000)
+            }
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
