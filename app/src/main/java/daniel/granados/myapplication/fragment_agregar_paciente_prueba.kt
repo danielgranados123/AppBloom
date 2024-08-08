@@ -475,7 +475,29 @@ class fragment_agregar_paciente_prueba : Fragment() {
 
         btnGuardarPaciente.setOnClickListener {
             //Validaciones
+            if (txtNombrePaciente.text.isEmpty() || txtApellidoPaciente.text.isEmpty() || txtEdad.text.isEmpty() || txtControlPaciente.text.isEmpty()) {
+                Toast.makeText(requireContext(), "Verifica que todos los campos estén completados.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
+            //Verificar que el nombre y el apellido contengan solo letras
+            if (!txtNombrePaciente.text.matches(Regex("^[a-zA-Z]+$")) || !txtApellidoPaciente.text.matches(Regex("^[a-zA-Z]+$"))) {
+                Toast.makeText(requireContext(), "Nombre o apellido no válido.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            //Verificar que la edad sea un número dentro del rango de 1 a 12 (Edades de los niños en el hospital Bloom)
+            val edad = txtEdad.text.toString().toIntOrNull()
+            if (edad == null || edad < 1 || edad > 12) {
+                Toast.makeText(requireContext(), "La edad ingresada no es válida.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            //Verificar que la hora contenga solo números
+            if (!txtControlPaciente.text.matches(Regex("^[0-9]+$"))) {
+                Toast.makeText(requireContext(), "La hora ingresada no es válida.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             val idCamaSeleccionada = listaCamas[spCamas.selectedItemPosition].ID_Cama
 
@@ -547,8 +569,6 @@ class fragment_agregar_paciente_prueba : Fragment() {
                 }
             }
         }
-
-
 
         return root
     }
