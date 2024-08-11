@@ -1,5 +1,6 @@
 package daniel.granados.myapplication
 
+import android.animation.ValueAnimator
 import android.app.TimePickerDialog
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
@@ -16,6 +17,7 @@ import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import daniel.granados.myapplication.ui.notifications.NotificationsFragment.variablesUsuarios.idUsuario
@@ -475,27 +477,200 @@ class fragment_agregar_paciente_prueba : Fragment() {
 
         btnGuardarPaciente.setOnClickListener {
             //Validaciones
-            if (txtNombrePaciente.text.isEmpty() || txtApellidoPaciente.text.isEmpty() || txtEdad.text.isEmpty() || txtControlPaciente.text.isEmpty()) {
+            if (txtNombrePaciente.text.isEmpty()) {
                 Toast.makeText(requireContext(), "Verifica que todos los campos estén completados.", Toast.LENGTH_SHORT).show()
+
+                //Se colorean los PlainText para que la enfermera sepa en dónde está el error
+                val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.bg_form_validaciones)
+                txtNombrePaciente.background = drawable
+
+                //Animo el cambio de borde a rojo y luego de vuelta al borde normal
+                val animator = ValueAnimator.ofFloat(0f, 1f)
+                animator.duration = 2000
+                animator.addUpdateListener { animation ->
+                    val progress = animation.animatedValue as Float
+                    val color = if (progress < 1f) {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_form_validaciones)
+                    } else {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_form)
+                    }
+                    txtNombrePaciente.background = color
+                }
+                animator.start()
+
+                return@setOnClickListener
+            }
+
+            if (txtApellidoPaciente.text.isEmpty()){
+                Toast.makeText(requireContext(), "Verifica que todos los campos estén completados.", Toast.LENGTH_SHORT).show()
+
+                //Se colorean los PlainText para que la enfermera sepa en dónde está el error
+                val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.bg_form_validaciones)
+                txtApellidoPaciente.background = drawable
+
+                //Animo el cambio de borde a rojo y luego de vuelta al borde normal
+                val animator = ValueAnimator.ofFloat(0f, 1f)
+                animator.duration = 2000
+                animator.addUpdateListener { animation ->
+                    val progress = animation.animatedValue as Float
+                    val color = if (progress < 1f) {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_form_validaciones)
+                    } else {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_form)
+                    }
+                    txtApellidoPaciente.background = color
+                }
+                animator.start()
+
+                return@setOnClickListener
+            }
+
+            if (txtEdad.text.isEmpty()) {
+                Toast.makeText(requireContext(), "Verifica que todos los campos estén completados.", Toast.LENGTH_SHORT).show()
+
+                //Se colorean los PlainText para que la enfermera sepa en dónde está el error
+                val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.bg_form_validaciones)
+                txtEdad.background = drawable
+
+                //Animo el cambio de borde a rojo y luego de vuelta al borde normal
+                val animator = ValueAnimator.ofFloat(0f, 1f)
+                animator.duration = 2000
+                animator.addUpdateListener { animation ->
+                    val progress = animation.animatedValue as Float
+                    val color = if (progress < 1f) {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_form_validaciones)
+                    } else {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_form)
+                    }
+                    txtEdad.background = color
+                }
+                animator.start()
+
+                return@setOnClickListener
+            }
+
+            if (txtControlPaciente.text.isEmpty()) {
+                Toast.makeText(requireContext(), "Verifica que todos los campos estén completados.", Toast.LENGTH_SHORT).show()
+
+                //Se colorean los PlainText para que la enfermera sepa en dónde está el error
+                val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.bg_form_validaciones)
+                txtControlPaciente.background = drawable
+
+                //Animo el cambio de borde a rojo y luego de vuelta al borde normal
+                val animator = ValueAnimator.ofFloat(0f, 1f)
+                animator.duration = 2000
+                animator.addUpdateListener { animation ->
+                    val progress = animation.animatedValue as Float
+                    val color = if (progress < 1f) {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_form_validaciones)
+                    } else {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_form)
+                    }
+                    txtControlPaciente.background = color
+                }
+                animator.start()
+
                 return@setOnClickListener
             }
 
             //Verificar que el nombre y el apellido contengan solo letras
-            if (!txtNombrePaciente.text.matches(Regex("^[a-zA-Z]+$")) || !txtApellidoPaciente.text.matches(Regex("^[a-zA-Z]+$"))) {
-                Toast.makeText(requireContext(), "Nombre o apellido no válido.", Toast.LENGTH_SHORT).show()
+            if (!txtNombrePaciente.text.matches(Regex("^[a-zA-Z]+$"))) {
+                Toast.makeText(requireContext(), "Nombre no válido.", Toast.LENGTH_SHORT).show()
+
+                //Se colorean los PlainText para que la enfermera sepa en dónde está el error
+                val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.bg_form_validaciones)
+                txtNombrePaciente.background = drawable
+
+                //Animo el cambio de borde a rojo y luego de vuelta al borde normal
+                val animator = ValueAnimator.ofFloat(0f, 1f)
+                animator.duration = 2000
+                animator.addUpdateListener { animation ->
+                    val progress = animation.animatedValue as Float
+                    val color = if (progress < 1f) {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_form_validaciones)
+                    } else {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_form)
+                    }
+                    txtNombrePaciente.background = color
+                }
+                animator.start()
+
+                return@setOnClickListener
+            }
+
+            if (!txtApellidoPaciente.text.matches(Regex("^[a-zA-Z]+$"))) {
+                Toast.makeText(requireContext(), "Apellido no válido.", Toast.LENGTH_SHORT).show()
+
+                //Se colorean los PlainText para que la enfermera sepa en dónde está el error
+                val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.bg_form_validaciones)
+                txtApellidoPaciente.background = drawable
+
+                //Animo el cambio de borde a rojo y luego de vuelta al borde normal
+                val animator = ValueAnimator.ofFloat(0f, 1f)
+                animator.duration = 2000
+                animator.addUpdateListener { animation ->
+                    val progress = animation.animatedValue as Float
+                    val color = if (progress < 1f) {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_form_validaciones)
+                    } else {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_form)
+                    }
+                    txtApellidoPaciente.background = color
+                }
+                animator.start()
+
                 return@setOnClickListener
             }
 
             //Verificar que la edad sea un número dentro del rango de 1 a 12 (Edades de los niños en el hospital Bloom)
             val edad = txtEdad.text.toString().toIntOrNull()
             if (edad == null || edad < 1 || edad > 12) {
+
                 Toast.makeText(requireContext(), "La edad ingresada no es válida.", Toast.LENGTH_SHORT).show()
+
+                //Se colorean los PlainText para que la enfermera sepa en dónde está el error
+                val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.bg_form_validaciones)
+                txtEdad.background = drawable
+
+                //Animo el cambio de borde a rojo y luego de vuelta al borde normal
+                val animator = ValueAnimator.ofFloat(0f, 1f)
+                animator.duration = 2000
+                animator.addUpdateListener { animation ->
+                    val progress = animation.animatedValue as Float
+                    val color = if (progress < 1f) {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_form_validaciones)
+                    } else {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_form)
+                    }
+                    txtEdad.background = color
+                }
+                animator.start()
+
                 return@setOnClickListener
             }
 
             //Verificar que la hora contenga solo números
             if (!txtControlPaciente.text.matches(Regex("^[0-9]+$"))) {
                 Toast.makeText(requireContext(), "La hora ingresada no es válida.", Toast.LENGTH_SHORT).show()
+
+                //Se colorean los PlainText para que la enfermera sepa en dónde está el error
+                val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.bg_form_validaciones)
+                txtControlPaciente.background = drawable
+
+                //Animo el cambio de borde a rojo y luego de vuelta al borde normal
+                val animator = ValueAnimator.ofFloat(0f, 1f)
+                animator.duration = 2000
+                animator.addUpdateListener { animation ->
+                    val progress = animation.animatedValue as Float
+                    val color = if (progress < 1f) {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_form_validaciones)
+                    } else {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_form)
+                    }
+                    txtControlPaciente.background = color
+                }
+                animator.start()
+
                 return@setOnClickListener
             }
 
