@@ -1,4 +1,4 @@
-´´´SQL
+```SQL
 //Script de la base de datos
 //Lleva datos de ejemplo para que pueda visualizar todas las herramientas de la aplicación, y que la pueda ver funcionando de una forma más realista.
 
@@ -218,4 +218,4 @@ select * from dual;
 select * from tbPacientesMedicamentos;
 
 
-´´´
+```
